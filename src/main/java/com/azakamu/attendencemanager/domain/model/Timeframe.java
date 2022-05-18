@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Timeframe is an immutable Object that holds a start- and endtime on a given date.
+ * Timeframe is an immutable object that holds a start- and endtime on a given date.
  *
  * @param date  the date to represent, from MIN_DATE to MAX_DATE
  * @param start the start to represent, from 00:00 to 23:59
