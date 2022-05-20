@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.domain.model;
+package com.azakamu.attendencemanager.domain.values;
 
 /**
  * ExamId instances are used to build a reference between a student and an Exam.

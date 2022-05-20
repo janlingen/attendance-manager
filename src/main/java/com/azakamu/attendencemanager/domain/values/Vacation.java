@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.domain.model;
+package com.azakamu.attendencemanager.domain.values;
 
 /**
  * Vacation is an immutable object that stores a time frame and a reason to provide context.

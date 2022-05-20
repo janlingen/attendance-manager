@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.domain.model;
+package com.azakamu.attendencemanager.domain.values;
 
 import java.time.DayOfWeek;
 import java.time.Duration;

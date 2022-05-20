@@ -1,5 +1,7 @@
-package com.azakamu.attendencemanager.domain.model;
+package com.azakamu.attendencemanager.domain.entities;
 
+import com.azakamu.attendencemanager.domain.values.ExamId;
+import com.azakamu.attendencemanager.domain.values.Vacation;
 import java.util.List;
 
 public class Student {
