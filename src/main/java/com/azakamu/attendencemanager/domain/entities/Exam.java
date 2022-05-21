@@ -6,6 +6,12 @@ import java.time.LocalTime;
 import java.util.List;
 import org.apache.tomcat.jni.Local;
 
+/**
+ * Exam is an entity that represents the an exam a {@link Student} entity could attend and
+ * a {@link Timeframe} which represents the exemption period
+ * (including for example arrival and departure). In addition, it contains information whether
+ * the exam takes place online or offline, its name and id.
+ */
 public class Exam {
 
   private final ExamId examId;
