@@ -11,6 +11,10 @@ import org.apache.tomcat.jni.Local;
  * a {@link Timeframe} which represents the exemption period
  * (including for example arrival and departure). In addition, it contains information whether
  * the exam takes place online or offline, its name and id.
+ * <br>
+ * <br>
+ * E.g. an exam starts at 11:00 and the exam takes place offline,
+ * {@link Timeframe#start()} could be at 10:00 so that the student has 1h for arrival.
  */
 public class Exam {
 
