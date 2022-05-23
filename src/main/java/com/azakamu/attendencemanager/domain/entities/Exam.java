@@ -13,7 +13,7 @@ import org.apache.tomcat.jni.Local;
  * the exam takes place online or offline, its name and id.
  * <br>
  * <br>
- * E.g. an exam starts at 11:00 and the exam takes place offline,
+ * E.g. an exam in starts at 11:00 and the exam takes place offline,
  * {@link Timeframe#start()} could be at 10:00 so that the student has 1h for arrival.
  */
 public class Exam {
@@ -23,12 +23,21 @@ public class Exam {
   private final Timeframe timeframe;
   private final Boolean online;
 
+  /**
+   * Required arguments constructor, that initializes every class attribute.
+   *
+   * @param examId the related {@link ExamId}
+   * @param name the name of the exam
+   * @param timeframe the {@link Timeframe} in which the exam takes place
+   * @param online wether the exam takes place offline or online
+   */
   public Exam(ExamId examId, String name, Timeframe timeframe, Boolean online) {
     this.examId = examId;
     this.name = name;
     this.timeframe = timeframe;
     this.online = online;
   }
+
 
   private LocalTime increaseStart() {
     if (online) {
