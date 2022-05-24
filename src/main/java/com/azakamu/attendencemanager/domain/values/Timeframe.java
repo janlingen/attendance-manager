@@ -47,12 +47,13 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 
   /**
    * Checks if both {@link #start()} and {@link #end()}
-   * are values that can be reached by adding up 15 minutes over and over.
+   * are values that can be reached by adding up the given minutes over and over.
    *
+   * @param minutes the number of minutes into which a time can be divided
    * @return true when a both start and end modulo 15 equals 0, else false
    */
-  public Boolean is15MinInterval() {
-    return start().getMinute() % 15 == 0 && end().getMinute() % 15 == 0;
+  public Boolean isDividable(Integer minutes) {
+    return start().getMinute() % minutes == 0 && end().getMinute() % minutes == 0;
   }
 
   /**
