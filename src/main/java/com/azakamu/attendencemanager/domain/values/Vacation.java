@@ -20,9 +20,9 @@ public record Vacation(Timeframe timeframe, String reason) {
         && vacation.timeframe.end().equals(LocalTime.of(13, 30));
   }
 
-  public boolean isValidDifference(Vacation vacation) {
-    return Duration.between(vacation.timeframe().end(), timeframe.start()).toMinutes() >= 90
-        || Duration.between(timeframe.end(), vacation.timeframe.start()).toMinutes() >= 90;
+  public boolean isValidDifference(Vacation vacation, Integer diff) {
+    return Duration.between(vacation.timeframe().end(), timeframe.start()).toMinutes() >= diff
+        || Duration.between(timeframe.end(), vacation.timeframe.start()).toMinutes() >= diff;
   }
 
   public Vacation merge(Vacation vacation) {
