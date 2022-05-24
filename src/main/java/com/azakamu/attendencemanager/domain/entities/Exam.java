@@ -2,8 +2,10 @@ package com.azakamu.attendencemanager.domain.entities;
 
 import com.azakamu.attendencemanager.domain.values.ExamId;
 import com.azakamu.attendencemanager.domain.values.Timeframe;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import org.apache.tomcat.jni.Local;
 
 /**
@@ -20,35 +22,39 @@ public class Exam {
 
   private final ExamId examId;
   private final String name;
+  private final Integer exemptionOffset;
   private final Timeframe timeframe;
   private final Boolean online;
 
   /**
    * Required arguments constructor, that initializes every class attribute.
    *
-   * @param examId the related {@link ExamId}
-   * @param name the name of the exam
-   * @param timeframe the {@link Timeframe} in which the exam takes place
-   * @param online wether the exam takes place offline or online
+   * @param examId          the related {@link ExamId}
+   * @param name            the name of the exam
+   * @param online          whether the exam takes place offline or online
+   * @param exemptionOffset the additional time added at the start and end depending on {@link #online}
+   * @param timeframe       the {@link Timeframe} in which the exam takes place
    */
-  public Exam(ExamId examId, String name, Timeframe timeframe, Boolean online) {
+  public Exam(ExamId examId, String name, Boolean online, Integer exemptionOffset,
+              Timeframe timeframe) {
     this.examId = examId;
     this.name = name;
-    this.timeframe = timeframe;
     this.online = online;
+    this.exemptionOffset = exemptionOffset;
+    this.timeframe = setTimeframe(timeframe);
   }
 
 
   private LocalTime increaseStart() {
     if (online) {
-      return timeframe.start().plusMinutes(120);
+      return timeframe.start().plusMinutes(exemptionOffset);
     }
-    return timeframe.start().plusMinutes(30);
+    return timeframe.start().plusMinutes(exemptionOffset);
   }
 
   private LocalTime decreaseEnd() {
     if (online) {
-      return timeframe.end().plusMinutes(-120);
+      return timeframe.end().minusMinutes(exemptionOffset);
     }
     return timeframe.end();
   }
@@ -59,6 +65,67 @@ public class Exam {
 
   public String getExamTimeframe() {
     List<LocalTime> times = getReducedExamTime();
-    return timeframe.date() + ", " + times.get(0) + " - " + times.get(1) + " ";
+    return timeframe.date() + ", " + times.get(0) + " - " + times.get(1);
+  }
+
+  public String getExamExcemptionTime() {
+    return timeframe.start() + " - " + timeframe.end();
+  }
+
+  public static Exam createDummy() {
+    return new Exam(
+        ExamId.createDummy(),
+        "Dummy",
+        false,
+        120,
+        new Timeframe(LocalDate.now(), LocalTime.now(), LocalTime.now()));
+  }
+
+  private Timeframe setTimeframe(Timeframe timeframe) {
+    if (online) {
+      return new Timeframe(timeframe.date(),
+          timeframe.start().minusMinutes(exemptionOffset),
+          timeframe.end());
+    }
+    return new Timeframe(timeframe.date(),
+        timeframe.start().minusMinutes(exemptionOffset),
+        timeframe.end().plusMinutes(exemptionOffset));
+  }
+
+  public ExamId getExamId() {
+    return examId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public Integer getExemptionOffset() {
+    return exemptionOffset;
+  }
+
+  public Timeframe getTimeframe() {
+    return timeframe;
+  }
+
+  public Boolean getOnline() {
+    return online;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Exam exam = (Exam) o;
+    return examId.equals(exam.examId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(examId);
   }
 }
