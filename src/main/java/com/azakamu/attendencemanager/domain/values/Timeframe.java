@@ -68,6 +68,7 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 
   /**
    * Example: 2022-12-24 from 00:01:00 to 23:59:00
+   *
    * @return the timeframe's date from start to end
    */
   @Override

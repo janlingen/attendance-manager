@@ -9,6 +9,7 @@ public record ExamId(Long id) {
 
   /**
    * Creates a dummy instance of ExamId
+   *
    * @return an instance of {@link ExamId} with id = -1
    */
   public static ExamId createDummy() {
