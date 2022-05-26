@@ -11,20 +11,38 @@ import java.time.LocalTime;
  */
 public record Vacation(Timeframe timeframe, String reason) {
 
-  public boolean isAtStartOrEnd(Vacation vacation) {
-    if (vacation.timeframe().start().equals(LocalTime.of(9, 30))
-        && timeframe.end().equals(LocalTime.of(13, 30))) {
-      return true;
-    }
-    return timeframe.start().equals(LocalTime.of(9, 30))
-        && vacation.timeframe.end().equals(LocalTime.of(13, 30));
+  /**
+   * Checks if {@link Vacation#timeframe()} is in the given attendence timeframe, otherwise it makes
+   * no sense taking a vacation.
+   *
+   * @param start the attendence start time
+   * @param end the attendence end time
+   * @return true if the start of the vacation is after the start parameter
+   * and the end of the vacation is after the end parameter
+   */
+  public Boolean isInRequiredAttendence(LocalTime start, LocalTime end) {
+    return timeframe().start().isAfter(start.minusMinutes(1))
+        || timeframe().end().isBefore(end.plusMinutes(1));
   }
 
-  public boolean isValidDifference(Vacation vacation, Integer diff) {
+  /**
+   * Checks if there is a valid time difference between the instance and another {@link Vacation}.
+   *
+   * @param vacation the vacation to compare with
+   * @param diff the difference in minutes required between two vacations
+   * @return true if the difference is valid, false if the difference isn't valid
+   */
+  public Boolean isValidDifference(Vacation vacation, Integer diff) {
     return Duration.between(vacation.timeframe().end(), timeframe.start()).toMinutes() >= diff
         || Duration.between(timeframe.end(), vacation.timeframe.start()).toMinutes() >= diff;
   }
 
+  /**
+   * Merges two vacations when they overlap and could actually be one vacation.
+   *
+   * @param vacation the {@link Vacation} with which the instance gets merged
+   * @return a single new merged {@link Vacation}
+   */
   public Vacation merge(Vacation vacation) {
     LocalTime start;
     LocalTime end;
