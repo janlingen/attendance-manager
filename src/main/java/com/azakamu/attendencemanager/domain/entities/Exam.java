@@ -9,14 +9,14 @@ import java.util.Objects;
 import org.apache.tomcat.jni.Local;
 
 /**
- * Exam is an entity that represents the an exam a {@link Student} entity could attend and
- * a {@link Timeframe} which represents the exemption period
- * (including for example arrival and departure). In addition, it contains information whether
- * the exam takes place online or offline, its name and id.
+ * Exam is an entity that represents the an exam a {@link Student} entity could attend and a
+ * {@link Timeframe} which represents the exemption period (including for example arrival and
+ * departure). In addition, it contains information whether the exam takes place online or offline,
+ * its name and id.
  * <br>
  * <br>
- * E.g. an exam in starts at 11:00 and the exam takes place offline,
- * {@link Timeframe#start()} could be at 10:00 so that the student has 1h for arrival.
+ * E.g. an exam in starts at 11:00 and the exam takes place offline, {@link Timeframe#start()} could
+ * be at 10:00 so that the student has 1h for arrival.
  */
 public class Exam {
 
@@ -32,11 +32,12 @@ public class Exam {
    * @param examId          the related {@link ExamId}
    * @param name            the name of the exam
    * @param online          whether the exam takes place offline or online
-   * @param exemptionOffset the additional time added at the start and end depending on {@link #online}
+   * @param exemptionOffset the additional time added at the start and end depending on
+   *                        {@link #online}
    * @param timeframe       the {@link Timeframe} in which the exam takes place
    */
   public Exam(ExamId examId, String name, Boolean online, Integer exemptionOffset,
-              Timeframe timeframe) {
+      Timeframe timeframe) {
     this.examId = examId;
     this.name = name;
     this.online = online;
@@ -44,23 +45,9 @@ public class Exam {
     this.timeframe = setTimeframe(timeframe);
   }
 
-
-  private LocalTime increaseStart() {
-    if (online) {
-      return timeframe.start().plusMinutes(exemptionOffset);
-    }
-    return timeframe.start().plusMinutes(exemptionOffset);
-  }
-
-  private LocalTime decreaseEnd() {
-    if (online) {
-      return timeframe.end().minusMinutes(exemptionOffset);
-    }
-    return timeframe.end();
-  }
-
   public List<LocalTime> getReducedExamTime() {
-    return List.of(increaseStart(), decreaseEnd());
+    return List.of(timeframe.increaseStart(getOnline(), getExemptionOffset()),
+        timeframe.decreaseEnd(getOnline(), getExemptionOffset()));
   }
 
   public String getExamTimeframe() {

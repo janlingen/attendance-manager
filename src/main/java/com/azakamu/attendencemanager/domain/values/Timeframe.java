@@ -65,6 +65,20 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   public Boolean isSameDay(Timeframe timeframe) {
     return date().isEqual(timeframe.date());
   }
+  
+  public LocalTime increaseStart(Boolean online, Integer exemptionOffset) {
+    if (online) {
+      return this.start().plusMinutes(exemptionOffset);
+    }
+    return this.start().plusMinutes(exemptionOffset);
+  }
+
+  public LocalTime decreaseEnd(Boolean online, Integer exemptionOffset) {
+    if (online) {
+      return this.end().minusMinutes(exemptionOffset);
+    }
+    return this.end();
+  }
 
   /**
    * Example: 2022-12-24 from 00:01:00 to 23:59:00
