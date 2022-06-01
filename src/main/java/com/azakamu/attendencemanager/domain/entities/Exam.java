@@ -54,11 +54,10 @@ public class Exam {
 
   public List<LocalTime> getReducedExamTime() {
     if (online) {
-      return List.of(timeframe.increaseStart(getOnline(), getExemptionOffsetOnline()),
-          timeframe.decreaseEnd(getOnline(), getExemptionOffsetOnline()));
+      return List.of(timeframe.increaseStart(getExemptionOffsetOnline()));
     } else {
-      return List.of(timeframe.increaseStart(getOnline(), getExemptionOffsetOffline()),
-          timeframe.decreaseEnd(getOnline(), getExemptionOffsetOffline()));
+      return List.of(timeframe.increaseStart(getExemptionOffsetOffline()),
+          timeframe.decreaseEnd(getExemptionOffsetOffline()));
     }
   }
 
