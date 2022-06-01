@@ -15,8 +15,8 @@ import java.time.LocalTime;
 public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 
   /**
-   * Uses the Attributes {@link #start()} and {@link #end()}
-   * of a given instance to calculate the time between.
+   * Uses the Attributes {@link #start()} and {@link #end()} of a given instance to calculate the
+   * time between.
    *
    * @return the time in minutes which lies between a start and end
    */
@@ -46,8 +46,8 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   }
 
   /**
-   * Checks if both {@link #start()} and {@link #end()}
-   * are values that can be reached by adding up the given minutes over and over.
+   * Checks if both {@link #start()} and {@link #end()} are values that can be reached by adding up
+   * the given minutes over and over.
    *
    * @param minutes the number of minutes into which a time can be divided
    * @return true when a both start and end modulo 15 equals 0, else false
@@ -65,19 +65,13 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   public Boolean isSameDay(Timeframe timeframe) {
     return date().isEqual(timeframe.date());
   }
-  
-  public LocalTime increaseStart(Boolean online, Integer exemptionOffset) {
-    if (online) {
-      return this.start().plusMinutes(exemptionOffset);
-    }
+
+  public LocalTime increaseStart(Integer exemptionOffset) {
     return this.start().plusMinutes(exemptionOffset);
   }
 
-  public LocalTime decreaseEnd(Boolean online, Integer exemptionOffset) {
-    if (online) {
-      return this.end().minusMinutes(exemptionOffset);
-    }
-    return this.end();
+  public LocalTime decreaseEnd(Integer exemptionOffset) {
+    return this.end().minusMinutes(exemptionOffset);
   }
 
   /**
