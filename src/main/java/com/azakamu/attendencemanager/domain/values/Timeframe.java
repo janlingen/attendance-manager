@@ -42,7 +42,8 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
    * @return true when a date falls between a given time span, else false
    */
   public Boolean isInTimeframe(LocalDate startDate, LocalDate endDate) {
-    return date().isAfter(startDate.minusDays(1)) && date().isBefore(endDate.plusDays(1));
+    return date().isAfter(startDate.minusDays(1)) &&
+        date().isBefore(endDate.plusDays(1));
   }
 
   /**
@@ -66,10 +67,20 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
     return date().isEqual(timeframe.date());
   }
 
+  /**
+   * Adds an exemption offset to {@link Timeframe#start}.
+   * @param exemptionOffset the minutes that are added
+   * @return {@link Timeframe#start} + exemptionOffset
+   */
   public LocalTime increaseStart(Integer exemptionOffset) {
     return this.start().plusMinutes(exemptionOffset);
   }
 
+  /**
+   * Subtracts an exemption offset from {@link Timeframe#end}.
+   * @param exemptionOffset the minutes that are subtracted
+   * @return {@link Timeframe#end} - exemptionOffset
+   */
   public LocalTime decreaseEnd(Integer exemptionOffset) {
     return this.end().minusMinutes(exemptionOffset);
   }
@@ -83,5 +94,6 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   public String toString() {
     return date() + " from " + start() + " to " + end();
   }
+
 
 }
