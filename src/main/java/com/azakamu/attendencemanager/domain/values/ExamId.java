@@ -8,7 +8,7 @@ package com.azakamu.attendencemanager.domain.values;
 public record ExamId(Long id) {
 
   /**
-   * Creates a dummy instance of ExamId
+   * Creates a dummy instance of ExamId.
    *
    * @return an instance of {@link ExamId} with id = -1
    */
