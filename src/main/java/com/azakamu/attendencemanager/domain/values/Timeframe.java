@@ -69,6 +69,7 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 
   /**
    * Adds an exemption offset to {@link Timeframe#start}.
+   *
    * @param exemptionOffset the minutes that are added
    * @return {@link Timeframe#start} + exemptionOffset
    */
@@ -78,6 +79,7 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 
   /**
    * Subtracts an exemption offset from {@link Timeframe#end}.
+   *
    * @param exemptionOffset the minutes that are subtracted
    * @return {@link Timeframe#end} - exemptionOffset
    */
@@ -95,5 +97,13 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
     return date() + " from " + start() + " to " + end();
   }
 
+  /**
+   * Creates a dummy instance of Timeframe.
+   *
+   * @return an instance of {@link Timeframe} build with {@link LocalDate} and {@link LocalTime}
+   */
+  public static Timeframe createDummy() {
+    return new Timeframe(LocalDate.now(), LocalTime.now(), LocalTime.now().plusMinutes(1));
+  }
 
 }
