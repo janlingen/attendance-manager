@@ -6,10 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
-import org.apache.tomcat.jni.Local;
 
 /**
- * Exam is an entity that represents the an exam a {@link Student} entity could attend and a
+ * {@link Exam} is an entity that represents the an exam a {@link Student} entity could attend and a
  * {@link Timeframe} which represents the exemption period (including for example arrival and
  * departure). In addition, it contains information whether the exam takes place online or offline,
  * its name and id.
@@ -52,6 +51,11 @@ public class Exam {
     this.timeframe = setTimeframe(timeframe);
   }
 
+  /**
+   * Gets the actual exam time without any of the exemption offsets.
+   *
+   * @return a list containing the adjusted start- and end time
+   */
   public List<LocalTime> getReducedExamTime() {
     if (online) {
       return List.of(timeframe.increaseStart(getExemptionOffsetOnline()));
@@ -61,25 +65,33 @@ public class Exam {
     }
   }
 
+  /**
+   * Gets the actual exam timeframe without any of the exemption offsets.
+   *
+   * @return a string build out of the adjusted {@link Timeframe}
+   */
   public String getExamTimeframe() {
     List<LocalTime> times = getReducedExamTime();
     return timeframe.date() + ", " + times.get(0) + " - " + times.get(1);
   }
 
-  public String getExamExcemptionTime() {
+
+  /**
+   * Gets the exam time with exemption time included.
+   *
+   * @return a string build out of the {@link Timeframe#start()} and {@link Timeframe#end()}
+   */
+  public String getExamExemptionTime() {
     return timeframe.start() + " - " + timeframe.end();
   }
 
-  public static Exam createDummy() {
-    return new Exam(
-        ExamId.createDummy(),
-        "Dummy",
-        false,
-        30,
-        120,
-        new Timeframe(LocalDate.now(), LocalTime.now(), LocalTime.now()));
-  }
-
+  /**
+   * Sets the timeframe of the exam, which is adjusted with one of the exemption offsets, depending
+   * on whether the exam takes place online or offline.
+   *
+   * @param timeframe the timeframe based on which {@link Exam#timeframe} is set
+   * @return the {@link Timeframe} for the exam instance
+   */
   private Timeframe setTimeframe(Timeframe timeframe) {
     if (online) {
       return new Timeframe(timeframe.date(),
@@ -91,6 +103,23 @@ public class Exam {
         timeframe.end().plusMinutes(getExemptionOffsetOffline()));
   }
 
+  /**
+   * Creates a dummy instance of Exam.
+   *
+   * @return an instance of {@link Exam} build with {@link LocalDate} and {@link LocalTime}
+   */
+  public static Exam createDummy() {
+    return new Exam(
+        ExamId.createDummy(),
+        "Dummy",
+        false,
+        30,
+        120,
+        Timeframe.createDummy());
+  }
+
+  // Basic Getter
+  // ----------------------------------------------------------------------------------------------
   public ExamId getExamId() {
     return examId;
   }
@@ -115,6 +144,9 @@ public class Exam {
     return online;
   }
 
+
+  // Equals and Hashcode
+  // ----------------------------------------------------------------------------------------------
   @Override
   public boolean equals(Object o) {
     if (this == o) {
