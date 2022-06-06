@@ -5,5 +5,5 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: 'chicken'
+      MYSQL_DATABASE: 'attendence'
       MYSQL_ROOT_PASSWORD: 'password'
