@@ -22,9 +22,8 @@ public class Exam {
   private final ExamId examId;
   private final String name;
 
-  private final Integer exemptionOffsetOnline;
+  private final Integer exemptionOffset;
 
-  private final Integer exemptionOffsetOffline;
   private final Timeframe timeframe;
   private final Boolean online;
 
@@ -34,20 +33,16 @@ public class Exam {
    * @param examId                 the related {@link ExamId}
    * @param name                   the name of the exam
    * @param online                 whether the exam takes place offline or online
-   * @param exemptionOffsetOnline  the additional time added at the start and end depending on
-   *                               {@link #online}
-   * @param exemptionOffsetOffline the additional time added at the start and end depending on
+   * @param exemptionOffset  the additional time added at the start and end depending on
    *                               {@link #online}
    * @param timeframe              the {@link Timeframe} in which the exam takes place
    */
-  public Exam(ExamId examId, String name, Boolean online, Integer exemptionOffsetOnline,
-      Integer exemptionOffsetOffline,
+  public Exam(ExamId examId, String name, Boolean online, Integer exemptionOffset,
       Timeframe timeframe) {
     this.examId = examId;
     this.name = name;
     this.online = online;
-    this.exemptionOffsetOnline = exemptionOffsetOnline;
-    this.exemptionOffsetOffline = exemptionOffsetOffline;
+    this.exemptionOffset = exemptionOffset;
     this.timeframe = setTimeframe(timeframe);
   }
 
@@ -57,11 +52,11 @@ public class Exam {
    * @return a list containing the adjusted start- and end time
    */
   public List<LocalTime> getReducedExamTime() {
-    if (online) {
-      return List.of(timeframe.increaseStart(getExemptionOffsetOnline()));
+    if (getOnline()) {
+      return List.of(timeframe.increaseStart(getExemptionOffset()),timeframe.end());
     } else {
-      return List.of(timeframe.increaseStart(getExemptionOffsetOffline()),
-          timeframe.decreaseEnd(getExemptionOffsetOffline()));
+      return List.of(timeframe.increaseStart(getExemptionOffset()),
+          timeframe.decreaseEnd(getExemptionOffset()));
     }
   }
 
@@ -95,12 +90,12 @@ public class Exam {
   private Timeframe setTimeframe(Timeframe timeframe) {
     if (online) {
       return new Timeframe(timeframe.date(),
-          timeframe.start().minusMinutes(getExemptionOffsetOnline()),
+          timeframe.start().minusMinutes(getExemptionOffset()),
           timeframe.end());
     }
     return new Timeframe(timeframe.date(),
-        timeframe.start().minusMinutes(getExemptionOffsetOffline()),
-        timeframe.end().plusMinutes(getExemptionOffsetOffline()));
+        timeframe.start().minusMinutes(getExemptionOffset()),
+        timeframe.end().plusMinutes(getExemptionOffset()));
   }
 
   /**
@@ -114,7 +109,6 @@ public class Exam {
         "Dummy",
         false,
         30,
-        120,
         Timeframe.createDummy());
   }
 
@@ -128,12 +122,8 @@ public class Exam {
     return name;
   }
 
-  public Integer getExemptionOffsetOffline() {
-    return exemptionOffsetOffline;
-  }
-
-  public Integer getExemptionOffsetOnline() {
-    return exemptionOffsetOnline;
+  public Integer getExemptionOffset() {
+    return exemptionOffset;
   }
 
   public Timeframe getTimeframe() {
