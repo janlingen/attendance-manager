@@ -41,7 +41,7 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
    * @param endDate   the end date of a time span
    * @return true when a date falls between a given time span, else false
    */
-  public Boolean isInTimeframe(LocalDate startDate, LocalDate endDate) {
+  public Boolean isInTimespan(LocalDate startDate, LocalDate endDate) {
     return date().isAfter(startDate.minusDays(1)) &&
         date().isBefore(endDate.plusDays(1));
   }
@@ -65,6 +65,16 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
    */
   public Boolean isSameDay(Timeframe timeframe) {
     return date().isEqual(timeframe.date());
+  }
+
+  /**
+   * Checks if {@link #date()} is at least one day before the date of another {@link Timeframe}
+   *
+   * @param timeframe the time frame to be compared
+   * @return true if {@link #date()} is before the given {@link Timeframe}'s date, else false
+   */
+  public Boolean isDayBefore(Timeframe timeframe) {
+    return date().isBefore(timeframe.date());
   }
 
   /**
@@ -103,7 +113,7 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
    * @return an instance of {@link Timeframe} build with {@link LocalDate} and {@link LocalTime}
    */
   public static Timeframe createDummy() {
-    return new Timeframe(LocalDate.now(), LocalTime.now(), LocalTime.now().plusMinutes(1));
+    return new Timeframe(LocalDate.of(2021,12, 24), LocalTime.of(9, 30), LocalTime.of(13, 30));
   }
 
 }
