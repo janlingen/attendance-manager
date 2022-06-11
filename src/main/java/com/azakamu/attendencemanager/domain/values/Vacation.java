@@ -22,7 +22,7 @@ public record Vacation(Timeframe timeframe, String reason) {
    */
   public Boolean isInRequiredAttendance(LocalTime start, LocalTime end) {
     return timeframe().start().isAfter(start.minusMinutes(1))
-        || timeframe().end().isBefore(end.plusMinutes(1));
+        && timeframe().end().isBefore(end.plusMinutes(1));
   }
 
   /**
