@@ -207,7 +207,7 @@ public class ExamUnitTests {
 
 
   @Test
-  @DisplayName("Hashcode of two exams is equal when they have the same ExamId")
+  @DisplayName("hashCode of two exams is equal when they have the same ExamId")
   void hashCodeTest1(){
     // arrange
     Exam exam1 = new Exam(new ExamId(1L), "Data Science", true, 30,
