@@ -188,4 +188,25 @@ public class ExamUnitTests {
     assertThat(equal).isFalse();
   }
 
+  @Test
+  @DisplayName("Hashcode of two exams is equal when they have the same ExamId")
+  void hashCodeTest1(){
+    // arrange
+    Exam exam1 = new Exam(new ExamId(1L), "Data Science", true, 30,
+        new Timeframe(
+            LocalDate.of(2022, 3, 10),
+            LocalTime.of(9, 30),
+            LocalTime.of(13, 30)));
+    Exam exam2 = new Exam(new ExamId(1L), "Computer Science", true, 30,
+        new Timeframe(
+            LocalDate.of(2022, 3, 15),
+            LocalTime.of(11, 30),
+            LocalTime.of(13, 30)));
+    // act
+    Integer hashCode1 = exam1.hashCode();
+    Integer hashCode2 = exam2.hashCode();
+
+    // assert
+    assertThat(hashCode1).isEqualTo(hashCode2);
+  }
 }
