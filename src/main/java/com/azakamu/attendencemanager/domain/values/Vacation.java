@@ -1,6 +1,7 @@
 package com.azakamu.attendencemanager.domain.values;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -58,5 +59,14 @@ public record Vacation(Timeframe timeframe, String reason) {
     }
     return new Vacation(new Timeframe(timeframe().date(), start, end),
         vacation.reason() + "; " + reason());
+  }
+
+  /**
+   * Creates a dummy instance of Vacation.
+   *
+   * @return an instance of {@link Vacation} build with {@link Timeframe#createDummy()} and {@link String} "test"
+   */
+  public static Vacation createDummy() {
+    return new Vacation(Timeframe.createDummy(), "test");
   }
 }
