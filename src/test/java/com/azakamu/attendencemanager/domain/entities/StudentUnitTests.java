@@ -73,5 +73,36 @@ public class StudentUnitTests {
     assertThat(student.getLeftoverVacationTime()).isZero();
   }
 
+  @Test
+  @DisplayName("vacation is successfully removed and leftoverVacationTime is increased correctly")
+  void removeVacationTest1() {
+    // arrange
+    Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
+    Student student = new Student(-1L, "janlingen", "123456",
+        240L, List.of(vacation), Collections.emptyList());
 
+    // act
+    student.removeVacation(vacation);
+
+    // assert
+    assertThat(student.getVacationList().size()).isZero();
+    assertThat(student.getLeftoverVacationTime()).isEqualTo(240L);
+  }
+
+  @Test
+  @DisplayName("vacations are successfully removed and leftoverVacationTime is increased correctly")
+  void removeVacationsTest1() {
+    // arrange
+    Vacation vacation1 = new Vacation(Timeframe.createDummy(), "test 1"); // takes 240 minutes vaction;
+    Vacation vacation2 = new Vacation(Timeframe.createDummy(), "test 2"); // takes 240 minutes vaction;
+    Student student = new Student(-1L, "janlingen", "123456",
+        480L, List.of(vacation1,vacation2), Collections.emptyList());
+
+    // act
+    student.removeVacations(List.of(vacation1,vacation2));
+
+    // assert
+    assertThat(student.getVacationList().size()).isZero();
+    assertThat(student.getLeftoverVacationTime()).isEqualTo(480L);
+  }
 }
