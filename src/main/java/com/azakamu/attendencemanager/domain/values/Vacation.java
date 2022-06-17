@@ -64,7 +64,8 @@ public record Vacation(Timeframe timeframe, String reason) {
   /**
    * Creates a dummy instance of Vacation.
    *
-   * @return an instance of {@link Vacation} build with {@link Timeframe#createDummy()} and {@link String} "test"
+   * @return an instance of {@link Vacation} build with {@link Timeframe#createDummy()} and
+   * {@link String} "test"
    */
   public static Vacation createDummy() {
     return new Vacation(Timeframe.createDummy(), "test");
