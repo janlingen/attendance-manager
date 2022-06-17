@@ -30,12 +30,12 @@ public class Exam {
   /**
    * Required arguments constructor, that initializes every class attribute.
    *
-   * @param examId                 the related {@link ExamId}
-   * @param name                   the name of the exam
-   * @param online                 whether the exam takes place offline or online
-   * @param exemptionOffset  the additional time added at the start and end depending on
-   *                               {@link #online}
-   * @param timeframe              the {@link Timeframe} in which the exam takes place
+   * @param examId          the related {@link ExamId}
+   * @param name            the name of the exam
+   * @param online          whether the exam takes place offline or online
+   * @param exemptionOffset the additional time added at the start and end depending on
+   *                        {@link #online}
+   * @param timeframe       the {@link Timeframe} in which the exam takes place
    */
   public Exam(ExamId examId, String name, Boolean online, Integer exemptionOffset,
       Timeframe timeframe) {
@@ -53,7 +53,7 @@ public class Exam {
    */
   public List<LocalTime> getReducedExamTime() {
     if (getOnline()) {
-      return List.of(timeframe.increaseStart(getExemptionOffset()),timeframe.end());
+      return List.of(timeframe.increaseStart(getExemptionOffset()), timeframe.end());
     } else {
       return List.of(timeframe.increaseStart(getExemptionOffset()),
           timeframe.decreaseEnd(getExemptionOffset()));
