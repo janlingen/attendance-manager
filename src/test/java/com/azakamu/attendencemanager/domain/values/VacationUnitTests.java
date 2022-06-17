@@ -134,6 +134,7 @@ public class VacationUnitTests {
     assertThat(merge.timeframe().start()).isEqualTo(vacation1.timeframe().start());
     assertThat(merge.timeframe().end()).isEqualTo(vacation1.timeframe().end());
   }
+
   @Test
   @DisplayName(
       "two vacations are merged, vacation1 starts after vacation2, vacation1 ends after vacation2")
