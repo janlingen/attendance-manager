@@ -186,11 +186,11 @@ public class Student {
       return false;
     }
     Student student = (Student) o;
-    return id.equals(student.id) && githubId.equals(student.githubId);
+    return id.equals(student.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, githubId);
+    return Objects.hash(id);
   }
 }
