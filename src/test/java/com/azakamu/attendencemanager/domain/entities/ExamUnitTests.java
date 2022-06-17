@@ -50,7 +50,7 @@ public class ExamUnitTests {
 
   @Test
   @DisplayName("getExamTimeframe supplies String correctly")
-  void getExamTimeframeTest() {
+  void getExamTimeframeTest1() {
     // arrange
     Exam exam = Exam.createDummy();
 
@@ -63,7 +63,7 @@ public class ExamUnitTests {
 
   @Test
   @DisplayName("getExamExemptionTime supplies String correctly")
-  void getExamExemptionTimeTest() {
+  void getExamExemptionTimeTest1() {
     // arrange
     Exam exam = Exam.createDummy();
 
@@ -112,11 +112,11 @@ public class ExamUnitTests {
 
   @Test
   @DisplayName("dummy is build correctly")
-  void createDummyTest(){
+  void createDummyTest1() {
     // arrange
-    Timeframe timeframe = new Timeframe(LocalDate.of(2021,12, 24), LocalTime.of(9, 30), LocalTime.of(13, 30));
+    Timeframe timeframe = new Timeframe(LocalDate.of(2021, 12, 24), LocalTime.of(9, 30),
+        LocalTime.of(13, 30));
     Exam exam = new Exam(new ExamId(-1L), "Dummy", false, 30, timeframe);
-
 
     // act
     Exam dummy = Exam.createDummy();
@@ -208,7 +208,7 @@ public class ExamUnitTests {
 
   @Test
   @DisplayName("hashCode of two exams is equal when they have the same ExamId")
-  void hashCodeTest1(){
+  void hashCodeTest1() {
     // arrange
     Exam exam1 = new Exam(new ExamId(1L), "Data Science", true, 30,
         new Timeframe(
