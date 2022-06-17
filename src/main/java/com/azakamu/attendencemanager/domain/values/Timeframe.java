@@ -113,7 +113,9 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
    * @return an instance of {@link Timeframe} build with {@link LocalDate} and {@link LocalTime}
    */
   public static Timeframe createDummy() {
-    return new Timeframe(LocalDate.of(2021,12, 24), LocalTime.of(9, 30), LocalTime.of(13, 30));
+    return new Timeframe(LocalDate.of(2021, 12, 24),
+        LocalTime.of(9, 30),
+        LocalTime.of(13, 30));
   }
 
 }
