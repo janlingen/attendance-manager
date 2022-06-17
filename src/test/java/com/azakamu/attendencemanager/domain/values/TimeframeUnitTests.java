@@ -198,7 +198,7 @@ public class TimeframeUnitTests {
 
   @Test
   @DisplayName("timeframe.start() is increased correctly")
-  void increaseStartTest() {
+  void increaseStartTest1() {
     // arrange
     LocalDate date = LocalDate.of(2022, 3, 27);
     LocalTime start = LocalTime.of(9, 30);
@@ -214,7 +214,7 @@ public class TimeframeUnitTests {
 
   @Test
   @DisplayName("timeframe.end() is decreased correctly")
-  void decreaseEndTest() {
+  void decreaseEndTest1() {
     // arrange
     LocalDate date = LocalDate.of(2022, 3, 27);
     LocalTime start = LocalTime.of(9, 30);
@@ -230,7 +230,7 @@ public class TimeframeUnitTests {
 
   @Test
   @DisplayName("toString is formatted correctly")
-  void toStringTest(){
+  void toStringTest1() {
     // arrange
     Timeframe dummy = Timeframe.createDummy();
 
