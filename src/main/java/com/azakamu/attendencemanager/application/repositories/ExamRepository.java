@@ -1,2 +1,5 @@
-package com.azakamu.attendencemanager.application.repositories;public interface ExamRepository {
+package com.azakamu.attendencemanager.application.repositories;
+
+public interface ExamRepository {
+
 }
