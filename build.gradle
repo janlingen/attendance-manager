@@ -19,9 +19,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'com.h2database:h2'
+
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation 'com.h2database:h2'
+    testImplementation 'com.tngtech.archunit:archunit-junit5-engine:0.23.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
