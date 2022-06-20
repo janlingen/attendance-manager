@@ -10,9 +10,7 @@ import org.mapstruct.Mapper;
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
     uses = {
         TimeframeMapper.class,
-        ExamIdMapper.class
-    }
-)
+        ExamIdMapper.class})
 public interface ExamMapper {
   Exam toDomain(ExamDto examDto);
 

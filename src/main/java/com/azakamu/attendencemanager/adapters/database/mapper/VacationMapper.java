@@ -10,9 +10,7 @@ import org.mapstruct.Mapper;
     implementationName = "DtoVacationMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
     uses = {
-        TimeframeMapper.class
-    }
-)
+        TimeframeMapper.class})
 public interface VacationMapper {
 
   Vacation toDomain(VacationDto vacationDto);
