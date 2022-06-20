@@ -1,5 +1,6 @@
 package com.azakamu.attendencemanager.adapters.database.dataaccess;
 
-public interface ExamDao {
+import com.azakamu.attendencemanager.adapters.database.datatransfer.entities.ExamDto;
+import org.springframework.data.repository.CrudRepository;
 
-}
+public interface ExamDao extends CrudRepository<ExamDto, Long> {}
