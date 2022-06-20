@@ -1,5 +1,5 @@
 package com.azakamu.attendencemanager.adapters.database.datatransfer.values;
 
-public record VacationDto() {
+public record VacationDto(TimeframeDto timeframe, String reason) {
 
 }
