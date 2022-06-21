@@ -5,11 +5,13 @@ import com.azakamu.attendencemanager.domain.values.Vacation;
 import java.util.List;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(
     componentModel = "spring",
     implementationName = "DtoVacationMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
     uses = {
         TimeframeMapper.class})
 public interface VacationMapper {

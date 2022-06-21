@@ -5,11 +5,13 @@ import com.azakamu.attendencemanager.domain.entities.Exam;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(
     componentModel = "spring",
     implementationName = "DtoExamMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
     uses = {
         TimeframeMapper.class,
         ExamIdMapper.class})
