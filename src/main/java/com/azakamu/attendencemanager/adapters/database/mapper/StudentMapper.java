@@ -6,6 +6,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 @Mapper(
+    componentModel = "spring",
     implementationName = "DtoStudentMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
     uses = {

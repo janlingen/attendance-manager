@@ -6,6 +6,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 @Mapper(
+    componentModel = "spring",
     implementationName = "DtoTimeframeMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface TimeframeMapper {

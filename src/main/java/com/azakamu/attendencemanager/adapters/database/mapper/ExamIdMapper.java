@@ -7,6 +7,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 @Mapper(
+    componentModel = "spring",
     implementationName = "DtoExamIdMapperImpl",
     injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ExamIdMapper {
@@ -17,5 +18,4 @@ public interface ExamIdMapper {
   List<ExamId> toDomainList(List<ExamIdDto> examIdDtos);
 
   List<ExamIdDto> toEntityList(List<ExamId> examIds);
-
 }
