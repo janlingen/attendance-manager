@@ -5,5 +5,5 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: 'attendence'
+      MYSQL_DATABASE: 'attendence-manager'
       MYSQL_ROOT_PASSWORD: 'password'
