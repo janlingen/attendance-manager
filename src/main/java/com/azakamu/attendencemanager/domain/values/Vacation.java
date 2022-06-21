@@ -1,7 +1,6 @@
 package com.azakamu.attendencemanager.domain.values;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
