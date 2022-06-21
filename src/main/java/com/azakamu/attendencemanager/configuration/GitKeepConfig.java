@@ -1,2 +1,8 @@
-package com.azakamu.attendencemanager.configuration;public class GitKeepConfig {
+package com.azakamu.attendencemanager.configuration;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class GitKeepConfig {
+
 }
