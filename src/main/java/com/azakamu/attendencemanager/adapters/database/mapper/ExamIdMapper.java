@@ -2,20 +2,17 @@ package com.azakamu.attendencemanager.adapters.database.mapper;
 
 import com.azakamu.attendencemanager.adapters.database.datatransfer.values.ExamIdDto;
 import com.azakamu.attendencemanager.domain.values.ExamId;
-import java.util.List;
-import org.mapstruct.InjectionStrategy;
+import java.util.Set;
 import org.mapstruct.Mapper;
 
-@Mapper(
-    componentModel = "spring",
-    implementationName = "DtoExamIdMapperImpl",
-    injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper
 public interface ExamIdMapper {
+
   ExamId toDomain(ExamIdDto examIdDto);
 
   ExamIdDto toDto(ExamId examId);
 
-  List<ExamId> toDomainList(List<ExamIdDto> examIdDtos);
+  Set<ExamId> toDomainList(Set<ExamIdDto> examIdDtos);
 
-  List<ExamIdDto> toEntityList(List<ExamId> examIds);
+  Set<ExamIdDto> toEntityList(Set<ExamId> examIds);
 }

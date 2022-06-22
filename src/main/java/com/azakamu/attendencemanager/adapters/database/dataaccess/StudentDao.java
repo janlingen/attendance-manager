@@ -2,13 +2,13 @@ package com.azakamu.attendencemanager.adapters.database.dataaccess;
 
 import com.azakamu.attendencemanager.adapters.database.datatransfer.entities.StudentDto;
 import java.util.Optional;
-import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface StudentDao extends CrudRepository<StudentDto, Long> {
 
-  @Query("SELECT * FROM STUDENT S WHERE S.GITHUB_ID = :githubId")
-  Optional<StudentDto> findByGithubId(@Param("githubId") String githubId);
+@Repository
+public interface StudentDao extends JpaRepository<StudentDto, Long> {
+
+  Optional<StudentDto> findByGithubId(String githubId);
 
 }

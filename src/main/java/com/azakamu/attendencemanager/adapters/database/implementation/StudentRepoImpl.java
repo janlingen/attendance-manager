@@ -4,31 +4,33 @@ import com.azakamu.attendencemanager.adapters.database.dataaccess.StudentDao;
 import com.azakamu.attendencemanager.adapters.database.mapper.StudentMapper;
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
 import com.azakamu.attendencemanager.domain.entities.Student;
-import org.springframework.stereotype.Repository;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class StudentRepoImpl implements StudentRepository {
 
-  private final StudentDao dataaccess;
+  private final StudentDao studentDao;
+
   private final StudentMapper mapper;
 
-  public StudentRepoImpl(StudentDao dataaccess, StudentMapper mapper) {
-    this.dataaccess = dataaccess;
-    this.mapper = mapper;
+  public StudentRepoImpl(StudentDao studentDao) {
+    this.studentDao = studentDao;
+    this.mapper = Mappers.getMapper(StudentMapper.class);
   }
 
   @Override
-  public void save(Student student) {
-    dataaccess.save(mapper.toDto(student));
+  public Student save(Student student) {
+    return mapper.toDomain(studentDao.save(mapper.toDto(student)));
   }
 
   @Override
   public Student findById(Long id) {
-    return dataaccess.findById(id).map(mapper::toDomain).orElse(Student.createDummy());
+    return studentDao.findById(id).map(mapper::toDomain).orElse(Student.createDummy());
   }
 
   @Override
   public Student findByGithubId(String githubId) {
-    return dataaccess.findByGithubId(githubId).map(mapper::toDomain).orElse(Student.createDummy());
+    return studentDao.findByGithubId(githubId).map(mapper::toDomain).orElse(Student.createDummy());
   }
 }
