@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ExamRepository {
 
-  void save(Exam exam);
+  Exam save(Exam exam);
 
   Exam findById(ExamId examId);
 

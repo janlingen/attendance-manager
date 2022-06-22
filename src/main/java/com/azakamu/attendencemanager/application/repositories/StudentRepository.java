@@ -4,7 +4,7 @@ import com.azakamu.attendencemanager.domain.entities.Student;
 
 public interface StudentRepository {
 
-  void save(Student student);
+  Student save(Student student);
 
   Student findById(Long id);
 
