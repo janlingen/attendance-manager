@@ -6,8 +6,10 @@ import com.azakamu.attendencemanager.domain.values.Vacation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * {@link Student} is an entity that represents a student participating in the project for which
@@ -22,8 +24,8 @@ public class Student {
   private final String githubName;
   private final String githubId;
   private Long leftoverVacationTime;
-  private final List<Vacation> vacationList;
-  private final List<ExamId> examIdList;
+  private final Set<Vacation> vacations;
+  private final Set<ExamId> examIds;
 
   /**
    * Required arguments constructor, that initializes every class attribute.
@@ -32,18 +34,17 @@ public class Student {
    * @param githubName           the Github name of the student
    * @param githubId             the unique Github ID of the student
    * @param leftoverVacationTime the minutes of vacation a student can take
-   * @param vacationList         the vacations of the student
-   * @param examIdList           the references of the student to his exams
+   * @param vacations            the vacations of the student
+   * @param examIds              the references of the student to his exams
    */
   public Student(Long id, String githubName, String githubId, Long leftoverVacationTime,
-      List<Vacation> vacationList,
-      List<ExamId> examIdList) {
+      Set<Vacation> vacations,
+      Set<ExamId> examIds) {
     this.id = id;
     this.githubName = githubName;
     this.githubId = githubId;
-    this.vacationList = new ArrayList<>(vacationList);
-    sortVacations();
-    this.examIdList = new ArrayList<>(examIdList);
+    this.vacations = new HashSet<>(vacations);
+    this.examIds = new HashSet<>(examIds);
     this.leftoverVacationTime = leftoverVacationTime;
     calcLeftoverVacationTime();
   }
@@ -52,23 +53,23 @@ public class Student {
    * Calculates the leftover vacation time of the student based on his list of vacations.
    */
   private void calcLeftoverVacationTime() {
-    for (Vacation v : this.vacationList) {
+    for (Vacation v : this.vacations) {
       this.leftoverVacationTime -= v.timeframe().duration();
     }
   }
 
   /**
-   * Adds a new {@link Vacation} to {@link Student#vacationList}.
+   * Adds a new {@link Vacation} to {@link Student#vacations}.
    *
    * @param vacation the vacation to add
    */
   public void addVacation(Vacation vacation) {
-    this.vacationList.add(vacation);
+    this.vacations.add(vacation);
     this.leftoverVacationTime -= vacation.timeframe().duration();
   }
 
   /**
-   * Adds multiple new {@link Vacation}s to {@link Student#vacationList}.
+   * Adds multiple new {@link Vacation}s to {@link Student#vacations}.
    *
    * @param vacations the list of vacations to add
    */
@@ -79,17 +80,17 @@ public class Student {
   }
 
   /**
-   * Removes a {@link Vacation} from {@link Student#vacationList}.
+   * Removes a {@link Vacation} from {@link Student#vacations}.
    *
    * @param vacation the vacation to remove
    */
   public void removeVacation(Vacation vacation) {
-    this.vacationList.remove(vacation);
+    this.vacations.remove(vacation);
     this.leftoverVacationTime += vacation.timeframe().duration();
   }
 
   /**
-   * Removes multiple {@link Vacation}s from {@link Student#vacationList}.
+   * Removes multiple {@link Vacation}s from {@link Student#vacations}.
    *
    * @param vacations the list of vacations to remove
    */
@@ -100,28 +101,28 @@ public class Student {
   }
 
   /**
-   * Adds a new reference as {@link ExamId} to {@link Student#examIdList}.
+   * Adds a new reference as {@link ExamId} to {@link Student#examIds}.
    *
    * @param examId the exam ID to add
    */
   public void addExamId(ExamId examId) {
-    this.examIdList.add(examId);
+    this.examIds.add(examId);
   }
 
   /**
-   * Removes a {@link ExamId} from {@link Student#examIdList}.
+   * Removes a {@link ExamId} from {@link Student#examIds}.
    *
    * @param examId the exam ID to remove
    */
   public void removeExamId(ExamId examId) {
-    this.examIdList.remove(examId);
+    this.examIds.remove(examId);
   }
 
   /**
-   * Sorts the {@link Student#vacationList} based on their {@link Timeframe}.
+   * Sorts the {@link Student#vacations} based on their {@link Timeframe}.
    */
-  private void sortVacations() {
-    this.vacationList.sort((vacation1, vacation2) -> {
+  private void sortVacations(List<Vacation> vacations) {
+    vacations.sort((vacation1, vacation2) -> {
       if (vacation1.timeframe()
           .date()
           .atTime(vacation1.timeframe().start())
@@ -144,7 +145,7 @@ public class Student {
    */
   public static Student createDummy() {
     return new Student(-1L, "githubId-dummy", "githubId-dummy", 300L,
-        Collections.emptyList(), Collections.emptyList());
+        Collections.emptySet(), Collections.emptySet());
   }
 
   // Basic Getter
@@ -165,13 +166,14 @@ public class Student {
     return leftoverVacationTime;
   }
 
-  public List<Vacation> getVacationList() {
-    sortVacations();
-    return vacationList;
+  public List<Vacation> getVacations() {
+    List<Vacation> vacations = new ArrayList<>(this.vacations);
+    sortVacations(vacations);
+    return vacations;
   }
 
-  public List<ExamId> getExamIdList() {
-    return examIdList;
+  public Set<ExamId> getExamIds() {
+    return examIds;
   }
 
 
