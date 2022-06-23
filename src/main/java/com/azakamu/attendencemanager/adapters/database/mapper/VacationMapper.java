@@ -16,7 +16,7 @@ public interface VacationMapper {
 
   VacationDto toDto(Vacation vacation);
 
-  Set<Vacation> toDomainList(Set<VacationDto> vacationDtos);
+  Set<Vacation> toDomainSet(Set<VacationDto> vacationDtos);
 
-  Set<VacationDto> toEntityList(Set<Vacation> vacations);
+  Set<VacationDto> toDtoSet(Set<Vacation> vacations);
 }

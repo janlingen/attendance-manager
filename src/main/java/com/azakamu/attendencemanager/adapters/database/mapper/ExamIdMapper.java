@@ -12,7 +12,7 @@ public interface ExamIdMapper {
 
   ExamIdDto toDto(ExamId examId);
 
-  Set<ExamId> toDomainList(Set<ExamIdDto> examIdDtos);
+  Set<ExamId> toDomainSet(Set<ExamIdDto> examIdDtos);
 
-  Set<ExamIdDto> toEntityList(Set<ExamId> examIds);
+  Set<ExamIdDto> toDtoSet(Set<ExamId> examIds);
 }
