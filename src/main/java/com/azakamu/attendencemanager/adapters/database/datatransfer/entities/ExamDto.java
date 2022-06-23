@@ -18,19 +18,9 @@ public class ExamDto {
   private TimeframeDto timeframe;
   private Boolean online;
 
-  public ExamDto(Long id, String name, Integer exemptionOffset, TimeframeDto timeframe,
-      Boolean online) {
-    this.id = id;
-    this.name = name;
-    this.exemptionOffset = exemptionOffset;
-    this.timeframe = timeframe;
-    this.online = online;
-  }
 
   public ExamDto() {
-
   }
-
 
   public Long getId() {
     return id;
@@ -71,16 +61,5 @@ public class ExamDto {
 
   public void setOnline(Boolean online) {
     this.online = online;
-  }
-
-  @Override
-  public String toString() {
-    return "ExamDto{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", exemptionOffset=" + exemptionOffset +
-        ", timeframe=" + timeframe +
-        ", online=" + online +
-        '}';
   }
 }

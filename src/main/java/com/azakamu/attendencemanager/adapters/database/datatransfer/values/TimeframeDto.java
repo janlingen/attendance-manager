@@ -11,16 +11,8 @@ public class TimeframeDto {
   LocalTime start;
   LocalTime end;
 
-  public TimeframeDto(LocalDate date, LocalTime start, LocalTime end) {
-    this.date = date;
-    this.start = start;
-    this.end = end;
-  }
-
   public TimeframeDto() {
-
   }
-
 
   public LocalDate getDate() {
     return date;
@@ -44,14 +36,5 @@ public class TimeframeDto {
 
   public void setEnd(LocalTime end) {
     this.end = end;
-  }
-
-  @Override
-  public String toString() {
-    return "TimeframeDto{" +
-        "date=" + date +
-        ", start=" + start +
-        ", end=" + end +
-        '}';
   }
 }

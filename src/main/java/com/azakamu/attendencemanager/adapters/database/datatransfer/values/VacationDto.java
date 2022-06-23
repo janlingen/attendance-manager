@@ -8,13 +8,7 @@ public class VacationDto {
   TimeframeDto timeframe;
   String reason;
 
-  public VacationDto(TimeframeDto timeframe, String reason) {
-    this.timeframe = timeframe;
-    this.reason = reason;
-  }
-
   public VacationDto() {
-
   }
 
   public TimeframeDto getTimeframe() {
@@ -34,12 +28,5 @@ public class VacationDto {
     this.reason = reason;
   }
 
-  @Override
-  public String toString() {
-    return "VacationDto{" +
-        "timeframe=" + timeframe +
-        ", reason='" + reason + '\'' +
-        '}';
-  }
 }
 

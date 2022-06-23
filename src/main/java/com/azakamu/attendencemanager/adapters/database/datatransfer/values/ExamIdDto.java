@@ -7,12 +7,7 @@ public class ExamIdDto {
 
   Long id;
 
-  public ExamIdDto(Long id) {
-    this.id = id;
-  }
-
   public ExamIdDto() {
-
   }
 
   public Long getId() {
@@ -23,10 +18,4 @@ public class ExamIdDto {
     this.id = id;
   }
 
-  @Override
-  public String toString() {
-    return "ExamIdDto{" +
-        "id=" + id +
-        '}';
-  }
 }

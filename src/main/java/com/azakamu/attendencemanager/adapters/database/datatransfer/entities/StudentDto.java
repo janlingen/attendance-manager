@@ -23,18 +23,7 @@ public class StudentDto {
   @ElementCollection(fetch = FetchType.LAZY)
   private Set<ExamIdDto> examIds;
 
-  public StudentDto(Long id, String githubName, String githubId, Long leftoverVacationTime,
-      Set<VacationDto> vacations, Set<ExamIdDto> examIds) {
-    this.id = id;
-    this.githubName = githubName;
-    this.githubId = githubId;
-    this.leftoverVacationTime = leftoverVacationTime;
-    this.vacations = vacations;
-    this.examIds = examIds;
-  }
-
   public StudentDto() {
-
   }
 
   public Long getId() {
@@ -85,17 +74,5 @@ public class StudentDto {
   public void setExamIds(
       Set<ExamIdDto> examIds) {
     this.examIds = examIds;
-  }
-
-  @Override
-  public String toString() {
-    return "StudentDto{" +
-        "id=" + id +
-        ", githubName='" + githubName + '\'' +
-        ", githubId='" + githubId + '\'' +
-        ", leftoverVacationTime=" + leftoverVacationTime +
-        ", vacationList=" + vacations +
-        ", examIdList=" + examIds +
-        '}';
   }
 }
