@@ -49,8 +49,7 @@ public class ExamRepoImpl implements ExamRepository {
 
   @Override
   public List<Exam> findAll() {
-    List<ExamDto> exams = new ArrayList<>();
-    examDao.findAll().forEach(exams::add);
+    List<ExamDto> exams = new ArrayList<>(examDao.findAll());
     return exams.stream().map(mapper::toDomain).collect(Collectors.toList());
   }
 }
