@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class StudentUnitTests {
 
     // act
     Student student = new Student(-1L, "janlingen", "123456",
-        leftoverVacationTime, Collections.emptyList(), Collections.emptyList());
+        leftoverVacationTime, Collections.emptySet(), Collections.emptySet());
 
     // assert
     assertThat(student.getLeftoverVacationTime()).isEqualTo(leftoverVacationTime);
@@ -36,7 +37,7 @@ public class StudentUnitTests {
 
     // act
     Student student = new Student(-1L, "janlingen", "123456",
-        240L, List.of(vacation), Collections.emptyList());
+        240L, Set.of(vacation), Collections.emptySet());
 
     // assert
     assertThat(student.getLeftoverVacationTime()).isZero();
@@ -48,14 +49,14 @@ public class StudentUnitTests {
     // arrange
     Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
     Student student = new Student(-1L, "janlingen", "123456",
-        240L, Collections.emptyList(), Collections.emptyList());
+        240L, Collections.emptySet(), Collections.emptySet());
 
     // act
     student.addVacation(vacation);
 
     // assert
-    assertThat(student.getVacationList().size()).isEqualTo(1);
-    assertThat(student.getVacationList().get(0)).isEqualTo(vacation);
+    assertThat(student.getVacations().size()).isEqualTo(1);
+    assertThat(student.getVacations().get(0)).isEqualTo(vacation);
     assertThat(student.getLeftoverVacationTime()).isZero();
   }
 
@@ -68,13 +69,13 @@ public class StudentUnitTests {
     Vacation vacation2 = new Vacation(Timeframe.createDummy(),
         "test 2"); // takes 240 minutes vaction;
     Student student = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
 
     // act
     student.addVacations(List.of(vacation1, vacation2));
 
     // assert
-    assertThat(student.getVacationList().size()).isEqualTo(2);
+    assertThat(student.getVacations().size()).isEqualTo(2);
     assertThat(student.getLeftoverVacationTime()).isZero();
   }
 
@@ -84,13 +85,13 @@ public class StudentUnitTests {
     // arrange
     Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
     Student student = new Student(-1L, "janlingen", "123456",
-        240L, List.of(vacation), Collections.emptyList());
+        240L, Set.of(vacation), Collections.emptySet());
 
     // act
     student.removeVacation(vacation);
 
     // assert
-    assertThat(student.getVacationList().size()).isZero();
+    assertThat(student.getVacations().size()).isZero();
     assertThat(student.getLeftoverVacationTime()).isEqualTo(240L);
   }
 
@@ -103,13 +104,13 @@ public class StudentUnitTests {
     Vacation vacation2 = new Vacation(Timeframe.createDummy(),
         "test 2"); // takes 240 minutes vaction;
     Student student = new Student(-1L, "janlingen", "123456",
-        480L, List.of(vacation1, vacation2), Collections.emptyList());
+        480L, Set.of(vacation1, vacation2), Collections.emptySet());
 
     // act
-    student.removeVacations(List.of(vacation1, vacation2));
+    student.removeVacations(Set.of(vacation1, vacation2));
 
     // assert
-    assertThat(student.getVacationList().size()).isZero();
+    assertThat(student.getVacations().size()).isZero();
     assertThat(student.getLeftoverVacationTime()).isEqualTo(480L);
   }
 
@@ -124,7 +125,7 @@ public class StudentUnitTests {
     student.addExamId(examId);
 
     // assert
-    assertThat(student.getExamIdList().size()).isEqualTo(1);
+    assertThat(student.getExamIds().size()).isEqualTo(1);
   }
 
   @Test
@@ -133,13 +134,13 @@ public class StudentUnitTests {
     // arrange
     ExamId examId = ExamId.createDummy();
     Student student = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptyList(), List.of(examId));
+        480L, Collections.emptySet(), Set.of(examId));
 
     // act
     student.removeExamId(examId);
 
     // assert
-    assertThat(student.getExamIdList().size()).isZero();
+    assertThat(student.getExamIds().size()).isZero();
   }
 
   @Test
@@ -155,18 +156,23 @@ public class StudentUnitTests {
     Timeframe timeframe3 = new Timeframe(LocalDate.of(2022, 12, 25),
         LocalTime.of(11, 30),
         LocalTime.of(12, 30));
+    Timeframe timeframe4 = new Timeframe(LocalDate.of(2022, 12, 23),
+        LocalTime.of(11, 30),
+        LocalTime.of(12, 30));
     Vacation vacation1 = new Vacation(timeframe1, "test 1");
     Vacation vacation2 = new Vacation(timeframe2, "test 1");
     Vacation vacation3 = new Vacation(timeframe3, "test 1");
+    Vacation vacation4 = new Vacation(timeframe4, "test 1");
 
     // act
     Student student = new Student(-1L, "janlingen", "123456",
-        480L, List.of(vacation1, vacation2, vacation3), Collections.emptyList());
+        480L, Set.of(vacation1, vacation2, vacation3, vacation4), Collections.emptySet());
 
     // assert
-    assertThat(student.getVacationList().get(0)).isEqualTo(vacation2);
-    assertThat(student.getVacationList().get(1)).isEqualTo(vacation1);
-    assertThat(student.getVacationList().get(2)).isEqualTo(vacation3);
+    assertThat(student.getVacations().get(1)).isEqualTo(vacation2);
+    assertThat(student.getVacations().get(2)).isEqualTo(vacation1);
+    assertThat(student.getVacations().get(3)).isEqualTo(vacation3);
+    assertThat(student.getVacations().get(0)).isEqualTo(vacation4);
   }
 
   @Test
@@ -180,8 +186,8 @@ public class StudentUnitTests {
     assertThat(student.getGithubName()).isEqualTo("githubId-dummy");
     assertThat(student.getGithubId()).isEqualTo("githubId-dummy");
     assertThat(student.getLeftoverVacationTime()).isEqualTo(300);
-    assertThat(student.getVacationList().size()).isZero();
-    assertThat(student.getExamIdList().size()).isZero();
+    assertThat(student.getVacations().size()).isZero();
+    assertThat(student.getExamIds().size()).isZero();
   }
 
   @Test
@@ -189,9 +195,9 @@ public class StudentUnitTests {
   void equalsTest1() {
     // arrange
     Student student1 = new Student(-1L, "lukeskywalker", "654321",
-        240L, Collections.emptyList(), Collections.emptyList());
+        240L, Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student1.equals(student2);
@@ -206,9 +212,9 @@ public class StudentUnitTests {
     // arrange
     // arrange
     Student student1 = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student1.equals(student2);
@@ -222,7 +228,7 @@ public class StudentUnitTests {
   void equalsTest3() {
     // arrange
     Student student = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
     // act
     Boolean equal = student.equals(null);
 
@@ -235,7 +241,7 @@ public class StudentUnitTests {
   void equalsTest4() {
     // arrange
     Student student = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student.equals(student);
@@ -250,9 +256,9 @@ public class StudentUnitTests {
   void hashCodeTest1() {
     // arrange
     Student student1 = new Student(-1L, "lukeskywalker", "654321",
-        240L, Collections.emptyList(), Collections.emptyList());
+        240L, Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptyList(), Collections.emptyList());
+        480L, Collections.emptySet(), Collections.emptySet());
 
     // act
     Integer hashCode1 = student1.hashCode();
