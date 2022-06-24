@@ -4,15 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azakamu.attendencemanager.adapters.database.datatransfer.entities.StudentDto;
 import com.azakamu.attendencemanager.adapters.database.mapper.ExamIdMapper;
-import com.azakamu.attendencemanager.adapters.database.mapper.ExamMapper;
 import com.azakamu.attendencemanager.adapters.database.mapper.StudentMapper;
 import com.azakamu.attendencemanager.adapters.database.mapper.VacationMapper;
 import com.azakamu.attendencemanager.domain.entities.Student;
-import com.azakamu.attendencemanager.domain.values.ExamId;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-public class StudentMapperTest {
+public class StudentMapperUnitTests {
 
   StudentMapper mapper = Mappers.getMapper(StudentMapper.class);
   VacationMapper vacationMapper = Mappers.getMapper(VacationMapper.class);
