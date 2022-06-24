@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.database;
+package com.azakamu.attendencemanager.database.implementation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,17 +6,16 @@ import com.azakamu.attendencemanager.adapters.database.dataaccess.StudentDao;
 import com.azakamu.attendencemanager.adapters.database.implementation.StudentRepoImpl;
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
 import com.azakamu.attendencemanager.domain.entities.Student;
-import com.azakamu.attendencemanager.domain.values.ExamId;
-import com.azakamu.attendencemanager.domain.values.Vacation;
-import java.util.Collections;
-import java.util.List;
+import javax.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+@DataJpaTest
 @ActiveProfiles("test")
+@Transactional
 public class StudentRepoIntegrationTests {
 
 
@@ -27,15 +26,69 @@ public class StudentRepoIntegrationTests {
   }
 
   @Test
-  void findByIdTest1() {
+  @DisplayName("student is saved correctly, id is generated")
+  void saveTest1() {
     // arrange
-    repository.save(new Student(null, "test", "1234", 240L,
-        Collections.emptyList(), Collections.emptyList()));
+    Student student = Student.createDummy();
 
     // act
-    Student result = repository.findById(1L);
+    Student result = repository.save(student);
 
     // assert
-    assertThat(result.getId()).isEqualTo(1L);
+    assertThat(result.getId()).isNotEqualTo(student.getId());
   }
+
+
+  @Test
+  @DisplayName("student is found based on his id")
+  void findByIdTest1() {
+    // arrange
+    Student student = repository.save(Student.createDummy());
+
+    // act
+    Student result = repository.findById(student.getId());
+
+    // assert
+    assertThat(result).isEqualTo(student);
+  }
+
+  @Test
+  @DisplayName("student is not found based on his id, dummy is returned")
+  void findByIdTest2() {
+    // arrange
+    Student student = Student.createDummy();
+
+    // act
+    Student result = repository.findById(student.getId());
+
+    // assert
+    assertThat(result).isEqualTo(student);
+  }
+
+  @Test
+  @DisplayName("student is found based on his githubId")
+  void findByGithubIdTest1() {
+    // arrange
+    Student student = repository.save(Student.createDummy());
+
+    // act
+    Student result = repository.findByGithubId(student.getGithubId());
+
+    // assert
+    assertThat(result).isEqualTo(student);
+  }
+
+  @Test
+  @DisplayName("student is not found based on his githubId, dummy is returned")
+  void findByGithubIdTest2() {
+    // arrange
+    Student student = Student.createDummy();
+
+    // act
+    Student result = repository.findByGithubId(student.getGithubId());
+
+    // assert
+    assertThat(result).isEqualTo(student);
+  }
+
 }
