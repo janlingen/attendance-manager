@@ -1,9 +1,8 @@
-package com.azakamu.attendencemanager.database.mapper;
+package com.azakamu.attendencemanager.adapters.database.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azakamu.attendencemanager.adapters.database.datatransfer.values.ExamIdDto;
-import com.azakamu.attendencemanager.adapters.database.mapper.ExamIdMapper;
 import com.azakamu.attendencemanager.domain.values.ExamId;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

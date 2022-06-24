@@ -1,9 +1,8 @@
-package com.azakamu.attendencemanager.database.implementation;
+package com.azakamu.attendencemanager.adapters.database.implementation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azakamu.attendencemanager.adapters.database.dataaccess.StudentDao;
-import com.azakamu.attendencemanager.adapters.database.implementation.StudentRepoImpl;
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
 import com.azakamu.attendencemanager.domain.entities.Student;
 import javax.transaction.Transactional;

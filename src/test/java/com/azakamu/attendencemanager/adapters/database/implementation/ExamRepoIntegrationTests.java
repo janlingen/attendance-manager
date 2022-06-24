@@ -1,9 +1,8 @@
-package com.azakamu.attendencemanager.database.implementation;
+package com.azakamu.attendencemanager.adapters.database.implementation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azakamu.attendencemanager.adapters.database.dataaccess.ExamDao;
-import com.azakamu.attendencemanager.adapters.database.implementation.ExamRepoImpl;
 import com.azakamu.attendencemanager.application.repositories.ExamRepository;
 import com.azakamu.attendencemanager.domain.entities.Exam;
 import com.azakamu.attendencemanager.domain.values.ExamId;
@@ -36,7 +35,6 @@ public class ExamRepoIntegrationTests {
     // assert
     assertThat(result.getExamId().id()).isNotEqualTo(exam.getExamId().id());
   }
-
 
   @Test
   @DisplayName("exam is found based on his id")

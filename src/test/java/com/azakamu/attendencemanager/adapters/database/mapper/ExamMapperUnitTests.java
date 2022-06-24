@@ -1,10 +1,8 @@
-package com.azakamu.attendencemanager.database.mapper;
+package com.azakamu.attendencemanager.adapters.database.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azakamu.attendencemanager.adapters.database.datatransfer.entities.ExamDto;
-import com.azakamu.attendencemanager.adapters.database.mapper.ExamMapper;
-import com.azakamu.attendencemanager.adapters.database.mapper.TimeframeMapper;
 import com.azakamu.attendencemanager.domain.entities.Exam;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
