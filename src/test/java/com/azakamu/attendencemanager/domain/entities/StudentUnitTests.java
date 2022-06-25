@@ -183,7 +183,7 @@ public class StudentUnitTests {
 
     // assert
     assertThat(student.getId()).isEqualTo(-1L);
-    assertThat(student.getGithubName()).isEqualTo("githubId-dummy");
+    assertThat(student.getGithubName()).isEqualTo("githubName-dummy");
     assertThat(student.getGithubId()).isEqualTo("githubId-dummy");
     assertThat(student.getLeftoverVacationTime()).isEqualTo(300);
     assertThat(student.getVacations().size()).isZero();

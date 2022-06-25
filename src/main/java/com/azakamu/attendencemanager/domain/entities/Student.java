@@ -23,9 +23,9 @@ public class Student {
   private final Long id;
   private final String githubName;
   private final String githubId;
-  private Long leftoverVacationTime;
   private final Set<Vacation> vacations;
   private final Set<ExamId> examIds;
+  private Long leftoverVacationTime;
 
   /**
    * Required arguments constructor, that initializes every class attribute.
@@ -47,6 +47,16 @@ public class Student {
     this.examIds = new HashSet<>(examIds);
     this.leftoverVacationTime = leftoverVacationTime;
     calcLeftoverVacationTime();
+  }
+
+  /**
+   * Creates a dummy instance of Student.
+   *
+   * @return an instance of {@link Student} with id -1.
+   */
+  public static Student createDummy() {
+    return new Student(-1L, "githubName-dummy", "githubId-dummy", 300L,
+        Collections.emptySet(), Collections.emptySet());
   }
 
   /**
@@ -136,16 +146,6 @@ public class Student {
       }
       return 0; // vacation1 == vacation2
     });
-  }
-
-  /**
-   * Creates a dummy instance of Student.
-   *
-   * @return an instance of {@link Student} with id -1.
-   */
-  public static Student createDummy() {
-    return new Student(-1L, "githubId-dummy", "githubId-dummy", 300L,
-        Collections.emptySet(), Collections.emptySet());
   }
 
   // Basic Getter
