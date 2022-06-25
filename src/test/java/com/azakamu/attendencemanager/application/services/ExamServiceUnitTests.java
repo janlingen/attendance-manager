@@ -31,7 +31,7 @@ public class ExamServiceUnitTests {
   private ExamService service;
 
   @BeforeEach
-  void erstelleStudentService() {
+  void setup() {
     service = new ExamService(examRepo, timeService);
     when(timeService.getTimespanStart()).thenReturn(LocalDate.of(2022, 6, 25));
     when(timeService.getTimespanEnd()).thenReturn(LocalDate.of(2300, 6, 25));
