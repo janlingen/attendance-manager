@@ -22,14 +22,13 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
+
 public class ExamServiceUnitTests {
 
+  private final ExamRepository examRepo = mock(ExamRepository.class);
+  private final TimeService timeService = mock(TimeService.class);
   private ExamService service;
-  private ExamRepository examRepo = mock(ExamRepository.class);
-  private TimeService timeService = mock(TimeService.class);
 
   @BeforeEach
   void erstelleStudentService() {
