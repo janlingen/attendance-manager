@@ -52,10 +52,6 @@ public class ExamService {
         .collect(Collectors.toList());
   }
 
-  private void saveExam(Exam exam) {
-    examRepository.save(exam);
-  }
-
   public ExamValidator createExam(String name, LocalDate date, LocalTime start,
       LocalTime end, Boolean online) {
     Exam exam;
@@ -81,6 +77,10 @@ public class ExamService {
     }
     saveExam(exam);
     return ExamValidator.SUCCESS;
+  }
+
+  private void saveExam(Exam exam) {
+    examRepository.save(exam);
   }
 
   private void sortExams(List<Exam> exams) {
