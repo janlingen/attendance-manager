@@ -1,8 +1,208 @@
 package com.azakamu.attendencemanager.application.services;
 
+import com.azakamu.attendencemanager.application.repositories.StudentRepository;
+import com.azakamu.attendencemanager.application.services.helper.TimeService;
+import com.azakamu.attendencemanager.application.validators.VacationValidator;
+import com.azakamu.attendencemanager.domain.entities.Student;
+import com.azakamu.attendencemanager.domain.values.ExamId;
+import com.azakamu.attendencemanager.domain.values.Timeframe;
+import com.azakamu.attendencemanager.domain.values.Vacation;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentService {
+
+  private final StudentRepository studentRepository;
+  private final ExamService examService;
+  private final TimeService timeService;
+
+  public StudentService(StudentRepository studentRepository, ExamService examService,
+      TimeService timeService) {
+    this.studentRepository = studentRepository;
+    this.examService = examService;
+    this.timeService = timeService;
+  }
+
+  private Student createStudent(String githubName, String githubId) {
+    return studentRepository.save(
+        new Student(null, githubName, githubId, timeService.getVacationTime(),
+            Collections.emptySet(), Collections.emptySet()));
+  }
+
+  public Student getStudent(String githubName, String githubId) {
+    Student query = studentRepository.findByGithubId(githubId);
+    if (!query.getGithubId().equals(githubId)) {
+      query = createStudent(githubName, githubId);
+    }
+    return query;
+  }
+
+  public VacationValidator enrollVacation(String githubName,
+      String githubId, LocalDate date, LocalTime start, LocalTime end, String reason) {
+    Timeframe timeframe = new Timeframe(date, start, end);
+    if (!timeframe.isDividable(timeService.getIntervallTime())) {
+      return VacationValidator.NOT_X_MIN_INTERVAL;
+    }
+    if (!timeframe.isInTimespan(
+        timeService.getTimespanStart(), timeService.getTimespanEnd())) {
+      return VacationValidator.NOT_IN_TIMESPAN;
+    }
+    if (timeframe.isWeekend()) {
+      return VacationValidator.ON_WEEKEND;
+    }
+    if (!timeframe.start().isBefore(timeframe.end())) {
+      return VacationValidator.START_AFTER_END;
+    }
+    Vacation vacation = new Vacation(timeframe, reason);
+    Student query = getStudent(githubName, githubId);
+    VacationValidator result =
+        bookVacation(query, examService.getTimeframesByIds(query.getExamIds()), vacation);
+    studentRepository.save(query);
+    return result;
+  }
+
+  public void cancelVacation(String githubName, String githubId, LocalDate date, LocalTime start,
+      LocalTime end, String reason) {
+    Student query = getStudent(githubName, githubId);
+    Timeframe timeframe = new Timeframe(date, start, end);
+    Vacation vacation = new Vacation(timeframe, reason);
+    if (date.isAfter(timeService.getTimespanStart())) {
+      query.removeVacation(vacation);
+      studentRepository.save(query);
+    }
+  }
+
+  public void enrollExam(String githubName, String githubId, Long examId) {
+    Student query = getStudent(githubName, githubId);
+    if (!query.getExamIds().contains(new ExamId(examId))) {
+      bookExam(
+          query,
+          new ExamId(examId),
+          examService.getTimeframeById(new ExamId(examId)));
+      studentRepository.save(query);
+    }
+  }
+
+  public void cancelExam(String githubName, String githubId, Long examId) {
+    if (examService.getTimeframeById(new ExamId(examId))
+        .date()
+        .isAfter(timeService.getTimespanStart())) {
+      Student query = getStudent(githubName, githubId);
+      query.removeExamId(new ExamId(examId));
+      studentRepository.save(query);
+    }
+  }
+
+  private VacationValidator bookVacation(Student student, List<Timeframe> examTimeframes,
+      Vacation vacation) {
+    Vacation newVacation = vacation;
+    Set<Vacation> old = new HashSet<>();
+    Set<Vacation> sameDayNoOverlap = new HashSet<>();
+    Long deletedTime = 0L;
+    Boolean vacationAtDay = checkSameDayForExam(vacation.timeframe(), examTimeframes);
+    for (Vacation v : student.getVacations()) {
+      // other vacation on same day
+      if (v.timeframe().isSameDay(newVacation.timeframe())) {
+        if (!(newVacation.timeframe().end().isBefore(v.timeframe().start())
+            || newVacation.timeframe().start().isAfter(v.timeframe().end()))) {
+          deletedTime += v.timeframe().duration();
+          old.add(v);
+          newVacation = newVacation.merge(v);
+        } else {
+          if (!vacationAtDay) {
+            sameDayNoOverlap.add(v);
+          }
+        }
+      }
+    }
+    if (sameDayNoOverlap.size() > 1) {
+      return VacationValidator.MAXIMUM_TWO;
+    }
+    for (Vacation v : sameDayNoOverlap) {
+      if (!newVacation.isValidDifference(v, timeService.getTimeBetween())) {
+        return VacationValidator.NOT_ENOUGH_SPACE_BETWEEN;
+      }
+    }
+    if (vacationAtDay) {
+      Set<Vacation> splitables = new HashSet<>();
+      splitables.add(newVacation);
+      for (Timeframe t : examTimeframes) {
+        if (vacation.timeframe().isSameDay(t)) {
+          splitables = splitVacations(t, splitables);
+        }
+      }
+      Long duration = 0L;
+      for (Vacation v : splitables) {
+        duration += v.timeframe().duration();
+      }
+      if (student.getLeftoverVacationTime() + deletedTime < duration) {
+        return VacationValidator.NOT_ENOUGH_TIME_LEFT;
+      }
+      student.removeVacations(old);
+      student.addVacations(splitables);
+      return VacationValidator.SUCCESS;
+    }
+
+    if (student.getLeftoverVacationTime() + deletedTime < newVacation.timeframe().duration()) {
+      return VacationValidator.NOT_ENOUGH_TIME_LEFT;
+    }
+    if ((newVacation.timeframe().duration() > timeService.getMaximumVacationLenght()
+        && newVacation.timeframe().duration() < timeService.getVacationTime())
+        || newVacation.timeframe().duration() > timeService.getVacationTime()) {
+      return VacationValidator.TOO_LONG;
+    }
+    student.removeVacations(old);
+    student.addVacation(newVacation);
+    return VacationValidator.SUCCESS;
+  }
+
+  private Boolean checkSameDayForExam(Timeframe timeframe, List<Timeframe> examTimeframes) {
+    for (Timeframe klausur : examTimeframes) {
+      if (klausur.date().isEqual(timeframe.date())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private Set<Vacation> splitVacations(Timeframe examTimeframe,
+      Set<Vacation> vacations) {
+    Set<Vacation> out = new HashSet<>();
+    for (Vacation v : vacations) {
+      if (!(v.timeframe().end().isBefore(examTimeframe.start())
+          || v.timeframe().start().isAfter(examTimeframe.end()))) {
+        if (v.timeframe().start().isBefore(examTimeframe.start())) {
+          out.add(
+              new Vacation(new Timeframe(v.timeframe().date(), v.timeframe().start(),
+                  examTimeframe.start()), v.reason()));
+        }
+        if (v.timeframe().end().isAfter(examTimeframe.end())) {
+          out.add(new Vacation(
+              new Timeframe(v.timeframe().date(), examTimeframe.end(), v.timeframe().end()),
+              v.reason()));
+        }
+      } else {
+        out.add(v);
+      }
+    }
+    return out;
+  }
+
+  private void bookExam(Student student, ExamId examId, Timeframe examTimeframe) {
+    List<Vacation> vacations = student.getVacations();
+    for (Vacation v : vacations) {
+      if (examTimeframe.isSameDay(v.timeframe())) {
+        student.addVacations(splitVacations(examTimeframe, Set.of(v)));
+        student.removeVacation(v);
+      }
+      student.addExamId(examId);
+    }
+  }
 
 }
