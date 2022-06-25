@@ -9,6 +9,5 @@ public enum VacationValidator {
   TOO_LONG,
   NOT_ENOUGH_TIME_LEFT,
   SUCCESS,
-  NOT_X_MIN_INTERVAL,
-  TWO_THEN_START_END
+  NOT_X_MIN_INTERVAL
 }
