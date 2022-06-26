@@ -54,10 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .userInfoEndpoint()
         .userService(createUserService());
   }
-
-  /**
-   * Regelt den rollenbasierten Zugang.
-   */
+  
   private OAuth2UserService<OAuth2UserRequest, OAuth2User> createUserService() {
     return new OAuth2UserService<>() {
 
