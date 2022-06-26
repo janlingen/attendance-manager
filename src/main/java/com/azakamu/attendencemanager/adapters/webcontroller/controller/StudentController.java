@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.adapters.webcontroller;
+package com.azakamu.attendencemanager.adapters.webcontroller.controller;
 
 import com.azakamu.attendencemanager.adapters.webcontroller.datainput.VacationForm;
 import com.azakamu.attendencemanager.application.services.ExamService;
@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Secured("ROLE_STUDENT")
@@ -26,10 +27,12 @@ public class StudentController {
   private final StudentService studentService;
   private final ExamService examService;
   private final TimeService timeService;
+  // FIXME: no long term solution
   private final List<String> vacationTimes =
       List.of(
           "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00",
           "12:15", "12:30", "12:45", "13:00", "13:15");
+  // FIXME: no long term solution
   private final List<String> examTimes =
       List.of(
           "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
@@ -84,14 +87,31 @@ public class StudentController {
     return "redirect:/";
   }
 
-  @GetMapping("/vacationregistration")
-  public String vacationregistration(Model model) {
+  @GetMapping("/vacationenrollment")
+  public String vacationEnrollment(Model model) {
     model.addAttribute("times", vacationTimes);
     VacationValidator result = (VacationValidator) model.getAttribute("result");
     if (result != null) {
       model.addAttribute("errorMsg", result.getMsg());
     }
-    return "vacationregistration";
+    return "vacationenrollment";
+  }
+
+  @PostMapping("/enrollVacation")
+  public String enrollVacation(
+      RedirectAttributes redirectAttributes,
+      @ModelAttribute("urlaub") VacationForm form,
+      @ModelAttribute("githubName") String githubName,
+      @ModelAttribute("githubId") String githubId) {
+    VacationValidator result =
+        studentService.enrollVacation(githubName, githubId, form.date(), form.start(), form.end(),
+            form.reason());
+    if (result == VacationValidator.SUCCESS) {
+      return "redirect:/";
+    } else {
+      redirectAttributes.addFlashAttribute("result", result);
+      return "redirect:/vacationenrollment";
+    }
   }
 
 }

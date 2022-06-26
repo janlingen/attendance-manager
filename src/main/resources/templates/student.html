@@ -1,10 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Attendance-Manager Overview</title>
+  <link crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        rel="stylesheet">
 </head>
 <body>
-$END$
+<div>
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="/student">Student</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Tutor</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Admin</a>
+    </li>
+  </ul>
+</div>
+<div class="container">
+  <h3 class="h1 text-center"
+      th:text="'Exemptions from: ' + ${githubName}">Exemptions from: skywalker</h3>
+  <h2 id="vacations">Vacations</h2>
+  <div>
+    <table aria-label="Vacations" class="table table-dark" id="vacation_table">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>from</th>
+        <th>to</th>
+        <th>Time in minutes</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody th:remove="all-but-first">
+      <tr th:each="vacation : ${student.getVacations()}">
+        <td>
+                        <span class="v_date" th:text="${vacation.timeframe().date()}">
+                            18.12.2022
+                        </span>
+        </td>
+        <td>
+                        <span class="v_start" th:text="${vacation.timeframe().start()}">
+                        12:15
+                        </span>
+        </td>
+        <td>
+                        <span class="v_end" th:text="${vacation.timeframe().end()}">
+                        13:30
+                        </span>
+        </td>
+        <td>
+                        <span class="v_duration" th:text="${vacation.timeframe().duration()}">
+                        75
+                        </span>
+        </td>
+        <td>
+          <form method="post" th:action="@{/cancelVacation}"
+                th:if="${!vacation.timeframe().isDayBefore(#calendars.createNow())}">
+            <input id="date" name="date" th:value="${vacation.timeframe().date()}" type="hidden">
+            <input id="start" name="start" th:value="${vacation.timeframe().start()}" type="hidden">
+            <input id="end" name="end" th:value="${vacation.timeframe().end()}" type="hidden">
+            <input id="reason" name="end" th:value="${vacation.reason()}" type="hidden">
+            <button class="btn-danger btn-sm"
+                    th:aria-label="'The following vacation will be cancelled soon: ' + ${null}"
+                    type="submit">
+              Cancel
+            </button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td><strong>Aggregated vacation time:</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong><span
+            th:text="${maxVacTime - student.getLeftoverVacationTime()}">75</span></strong></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Leftover vacation time:</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong><span class="leftoverVacationTime"
+                          th:text="${student.getLeftoverVacationTime()}">165</span></strong></td>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="text-center">
+    <a href="/vacationenrollment">
+      <button aria-label="click here to enroll for a vacation" class="btn-primary btn-lg">ENROLL
+        VACATION
+      </button>
+    </a>
+  </div>
+  <br>
+  <h2 id="exams">Exams</h2>
+  <p class="alert alert-dark" id="alert1" th:if="${exams.size() == 0}">You are not enrolled for any
+    exams.</p>
+  <div>
+    <table class="table table-dark" id="exam_table" th:if="${exams.size() > 0}">
+      <thead>
+      <tr>
+        <th>Course</th>
+        <th>Exam date</th>
+        <th>Exam time</th>
+        <th>Attendance exemption</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody th:remove="all-but-first">
+      <tr th:each="exam : ${exams}">
+        <td>
+                        <span class="e_name" th:text="${exam.getName()}">
+                        Defence Against the Dark Arts
+                        </span>
+        </td>
+        <td>
+                        <span class="e_date" th:text="${exam.getTimeframe().date()}">
+                          24.07.2022
+                        </span>
+        </td>
+        <td>
+                        <span class="e_examtime" th:text="${exam.getExamTimeframe()}">
+                        08:30 - 10:00
+                        </span>
+        </td>
+        <td>
+                        <span class="e_attendanceexemption"
+                              th:text="${exam.getExamExemptionTime()}">
+                        08:30 - 12:00
+                        </span>
+        </td>
+        <td>
+          <form method="post" th:action="@{/cancelExam}"
+                th:if="${!exam.getTimeframe().isDayBefore(#calendars.createNow())}">
+            <input id="idExam" name="exam" th:value="${exam.getExamId().id()}"
+                   type="hidden">
+            <button class="btn-danger btn-sm"
+                    th:aria-label="'Cancel exam ' + ${exam.getName()}"
+                    type="submit">Cancel
+            </button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center">
+    <a href="/examregistration">
+      <button aria-label="click here to enroll for an exam" class="btn-primary btn-lg">
+        ENROLL EXAM
+      </button>
+    </a>
+  </div>
+</div>
+<script>
+</script>
 </body>
-</html>

@@ -2,26 +2,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Vacation registration</title>
+  <title>Vacation enrollment</title>
   <link crossorigin="anonymous"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
         rel="stylesheet">
 </head>
 <body>
+<div>
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="/student">Student</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Tutor</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Admin</a>
+    </li>
+  </ul>
+</div>
 <div class="container">
-  <h1>Enroll vacation</h1>
+  <h3>Enroll vacation</h3>
   <p class="alert alert-danger" id="alert1" th:if="${errorMsg} != null" th:text="${errorMsg}"></p>
   <div class="formular mt-3">
-    <form method="post" name="urlaub_erstellen" th:action="@{/enrollUrlaub}">
+    <form method="post" name="create_vacation" th:action="@{/enrollVacation}">
       <div class="form-group">
-        <label for="date">Wähle das Datum aus:
+        <label for="date">Choose date:
           <input class="form-control" id="date" name="date" required type="date"></label>
       </div>
       <div class="form-group">
-        <label for="start">Wähle die Startzeit aus:
+        <label for="start">Choose start time:
           <select class="form-control" id="start" name="start" required>
-            <option disabled hidden selected value="">--Zeit auswählen--</option>
+            <option disabled hidden selected value="">--choose time--</option>
             <option>09:30</option>
             <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
               09:45
@@ -29,9 +42,9 @@
           </select></label>
       </div>
       <div class="form-group">
-        <label for="end">Wähle die Endzeit aus:
+        <label for="end">Choose end time:
           <select class="form-control" id="end" name="end" required>
-            <option disabled hidden selected value="">--Zeit auswählen--</option>
+            <option disabled hidden selected value="">--choose time--</option>
             <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
               13:15
             </option>
@@ -39,17 +52,11 @@
           </select></label>
       </div>
       <br>
-      <button class="btn-primary btn" type="submit">Eintragen</button>
+      <button class="btn-primary btn" type="submit">ENROLL</button>
     </form>
   </div>
 </div>
-
 <script>
-  const switchElement = document.querySelector('.switch')
-
-  switchElement.addEventListener('click', () => {
-    document.body.classList.toggle('dark')
-  })
 </script>
 </body>
 </html>
