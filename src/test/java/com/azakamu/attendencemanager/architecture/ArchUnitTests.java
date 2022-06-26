@@ -35,7 +35,7 @@ public class ArchUnitTests {
           .withOptionalLayers(true)
           .domainModels("..domain..")
           .applicationServices("..application..")
-          .adapter("webcontroller", "..adapters.webcontroller..")
+          .adapter("webcontroller", "..adapters.webcontroller.controller..")
           .adapter("database", "..adapters.database..");
 
   @ArchTest
@@ -67,7 +67,7 @@ public class ArchUnitTests {
           .and()
           .areNotInterfaces()
           .and()
-          .resideInAPackage("..adapters.webcontroller..")
+          .resideInAPackage("..adapters.webcontroller.controller..")
           .should()
           .beMetaAnnotatedWith(Controller.class);
 

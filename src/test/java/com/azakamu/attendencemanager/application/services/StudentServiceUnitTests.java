@@ -470,7 +470,7 @@ public class StudentServiceUnitTests {
 
 
   @Test
-  @DisplayName("ttry to enroll vacation that can not be divided by given intervall")
+  @DisplayName("try to enroll vacation that can not be divided by given intervall")
   void enrollVacationTest14() {
     // arrange
     Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
@@ -777,6 +777,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(student.getVacations().size()).isEqualTo(0);
+    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
   }
 
   @Test
