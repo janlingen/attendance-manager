@@ -25,8 +25,8 @@
   </ul>
 </div>
 <div class="container">
-  <h3 class="h1 text-center"
-      th:text="'Exemptions from: ' + ${githubName}">Exemptions from: skywalker</h3>
+  <h1 class="text-center"
+      th:text="'Exemptions from: ' + ${githubName}">Exemptions from: skywalker</h1>
   <h2 id="vacations">Vacations</h2>
   <div>
     <table aria-label="Vacations" class="table table-dark" id="vacation_table">
@@ -67,9 +67,9 @@
             <input id="date" name="date" th:value="${vacation.timeframe().date()}" type="hidden">
             <input id="start" name="start" th:value="${vacation.timeframe().start()}" type="hidden">
             <input id="end" name="end" th:value="${vacation.timeframe().end()}" type="hidden">
-            <input id="reason" name="end" th:value="${vacation.reason()}" type="hidden">
+            <input id="reason" name="reason" th:value="${vacation.reason()}" type="hidden">
             <button class="btn-danger btn-sm"
-                    th:aria-label="'The following vacation will be cancelled soon: ' + ${null}"
+                    th:aria-label="'The following vacation will be cancelled soon: ' + ${vacation.timeframe().toString()}"
                     type="submit">
               Cancel
             </button>
@@ -159,7 +159,7 @@
     </table>
   </div>
   <div class="text-center">
-    <a href="/examregistration">
+    <a href="/examenrollment">
       <button aria-label="click here to enroll for an exam" class="btn-primary btn-lg">
         ENROLL EXAM
       </button>
