@@ -29,12 +29,6 @@ public class StudentService {
     this.timeService = timeService;
   }
 
-  private Student createStudent(String githubName, String githubId) {
-    return studentRepository.save(
-        new Student(null, githubName, githubId, timeService.getVacationTime(),
-            Collections.emptySet(), Collections.emptySet()));
-  }
-
   public Student getStudent(String githubName, String githubId) {
     Student query = studentRepository.findByGithubId(githubId);
     if (!query.getGithubId().equals(githubId)) {
@@ -72,9 +66,11 @@ public class StudentService {
     Student query = getStudent(githubName, githubId);
     Timeframe timeframe = new Timeframe(date, start, end);
     Vacation vacation = new Vacation(timeframe, reason);
-    if (date.isAfter(timeService.getTimespanStart())) {
-      query.removeVacation(vacation);
-      studentRepository.save(query);
+    if (query.getVacations().contains(vacation)) {
+      if (date.isAfter(timeService.getTimespanStart())) {
+        query.removeVacation(vacation);
+        studentRepository.save(query);
+      }
     }
   }
 
@@ -99,6 +95,12 @@ public class StudentService {
     }
   }
 
+  private Student createStudent(String githubName, String githubId) {
+    return studentRepository.save(
+        new Student(null, githubName, githubId, timeService.getVacationTime(),
+            Collections.emptySet(), Collections.emptySet()));
+  }
+
   private VacationValidator bookVacation(Student student, List<Timeframe> examTimeframes,
       Vacation vacation) {
     Vacation newVacation = vacation;
@@ -120,9 +122,6 @@ public class StudentService {
           }
         }
       }
-    }
-    if (sameDayNoOverlap.size() > 1) {
-      return VacationValidator.MAXIMUM_TWO;
     }
     for (Vacation v : sameDayNoOverlap) {
       if (!newVacation.isValidDifference(v, timeService.getTimeBetween())) {
@@ -197,12 +196,14 @@ public class StudentService {
   private void bookExam(Student student, ExamId examId, Timeframe examTimeframe) {
     List<Vacation> vacations = student.getVacations();
     for (Vacation v : vacations) {
-      if (examTimeframe.isSameDay(v.timeframe())) {
+      if (examTimeframe.isSameDay(v.timeframe()) && !(
+          v.timeframe().end().isBefore(examTimeframe.start())
+              || v.timeframe().start().isAfter(examTimeframe.end()))) {
         student.addVacations(splitVacations(examTimeframe, Set.of(v)));
         student.removeVacation(v);
       }
-      student.addExamId(examId);
     }
+    student.addExamId(examId);
   }
 
 }
