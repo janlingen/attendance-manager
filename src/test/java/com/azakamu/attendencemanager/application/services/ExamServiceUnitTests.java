@@ -216,7 +216,7 @@ public class ExamServiceUnitTests {
     // assert
     assertThat(result).isEqualTo(ExamValidator.SUCCESS);
     verify(examRepo, times(1)).save(any(Exam.class));
-    verify(timeService, times(1)).getExemptionOffsetOffline();
+    verify(timeService, times(3)).getExemptionOffsetOffline();
     verify(timeService, times(0)).getExemptionOffsetOnline();
   }
 
@@ -238,7 +238,7 @@ public class ExamServiceUnitTests {
     assertThat(result).isEqualTo(ExamValidator.SUCCESS);
     verify(examRepo, times(1)).save(any(Exam.class));
     verify(timeService, times(0)).getExemptionOffsetOffline();
-    verify(timeService, times(1)).getExemptionOffsetOnline();
+    verify(timeService, times(2)).getExemptionOffsetOnline();
   }
 
 

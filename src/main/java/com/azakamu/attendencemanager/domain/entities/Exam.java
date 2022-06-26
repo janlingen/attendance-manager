@@ -43,7 +43,21 @@ public class Exam {
     this.name = name;
     this.online = online;
     this.exemptionOffset = exemptionOffset;
-    this.timeframe = setTimeframe(timeframe);
+    this.timeframe = timeframe;
+  }
+
+  /**
+   * Creates a dummy instance of Exam.
+   *
+   * @return an instance of {@link Exam} build with {@link LocalDate} and {@link LocalTime}
+   */
+  public static Exam createDummy() {
+    return new Exam(
+        ExamId.createDummy(),
+        "Dummy",
+        false,
+        30,
+        Timeframe.createDummy());
   }
 
   /**
@@ -70,7 +84,6 @@ public class Exam {
     return timeframe.date() + ", " + times.get(0) + " - " + times.get(1);
   }
 
-
   /**
    * Gets the exam time with exemption time included.
    *
@@ -78,38 +91,6 @@ public class Exam {
    */
   public String getExamExemptionTime() {
     return timeframe.start() + " - " + timeframe.end();
-  }
-
-  /**
-   * Sets the timeframe of the exam, which is adjusted with one of the exemption offsets, depending
-   * on whether the exam takes place online or offline.
-   *
-   * @param timeframe the timeframe based on which {@link Exam#timeframe} is set
-   * @return the {@link Timeframe} for the exam instance
-   */
-  private Timeframe setTimeframe(Timeframe timeframe) {
-    if (online) {
-      return new Timeframe(timeframe.date(),
-          timeframe.start().minusMinutes(getExemptionOffset()),
-          timeframe.end());
-    }
-    return new Timeframe(timeframe.date(),
-        timeframe.start().minusMinutes(getExemptionOffset()),
-        timeframe.end().plusMinutes(getExemptionOffset()));
-  }
-
-  /**
-   * Creates a dummy instance of Exam.
-   *
-   * @return an instance of {@link Exam} build with {@link LocalDate} and {@link LocalTime}
-   */
-  public static Exam createDummy() {
-    return new Exam(
-        ExamId.createDummy(),
-        "Dummy",
-        false,
-        30,
-        Timeframe.createDummy());
   }
 
   // Basic Getter

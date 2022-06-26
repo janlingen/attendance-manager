@@ -61,11 +61,13 @@ public class ExamService {
     if (online) {
       exam =
           new Exam(ExamId.createDummy(), name, online, timeService.getExemptionOffsetOnline(),
-              new Timeframe(date, start, end));
+              new Timeframe(date, start.minusMinutes(timeService.getExemptionOffsetOnline()), end));
     } else {
       exam =
           new Exam(ExamId.createDummy(), name, online, timeService.getExemptionOffsetOffline(),
-              new Timeframe(date, start, end));
+              new Timeframe(date, start.minusMinutes(timeService.getExemptionOffsetOffline()),
+                  end.plusMinutes(
+                      timeService.getExemptionOffsetOffline())));
     }
     if (!exam
         .getTimeframe()

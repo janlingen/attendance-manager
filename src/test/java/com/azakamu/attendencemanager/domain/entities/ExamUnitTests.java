@@ -58,7 +58,7 @@ public class ExamUnitTests {
     String result = exam.getExamTimeframe();
 
     // assert
-    assertThat(result).isEqualTo("2021-12-24, 09:30 - 13:30");
+    assertThat(result).isEqualTo("2021-12-24, 10:00 - 13:00");
   }
 
   @Test
@@ -71,43 +71,7 @@ public class ExamUnitTests {
     String result = exam.getExamExemptionTime();
 
     // assert
-    assertThat(result).isEqualTo("09:00 - 14:00");
-  }
-
-  @Test
-  @DisplayName("setTimeframe for an online exam, "
-      + "start should be reduced and end increased by 30 minutes")
-  void setTimeframeTest1() {
-    // arrange
-    LocalDate date = LocalDate.of(2022, 3, 27);
-    LocalTime start = LocalTime.of(9, 30);
-    LocalTime end = LocalTime.of(13, 30);
-    Timeframe timeframe = new Timeframe(date, start, end);
-
-    // act
-    Exam exam = new Exam(ExamId.createDummy(), "Test Exam", true, 30, timeframe);
-
-    // assert
-    assertThat(exam.getTimeframe().start()).isEqualTo(start.minusMinutes(30));
-    assertThat(exam.getTimeframe().end()).isEqualTo(end);
-  }
-
-  @Test
-  @DisplayName("setTimeframe for an online exam, "
-      + "start should be reduced and end increased by 30 minutes")
-  void setTimeframeTest2() {
-    // arrange
-    LocalDate date = LocalDate.of(2022, 3, 27);
-    LocalTime start = LocalTime.of(9, 30);
-    LocalTime end = LocalTime.of(13, 30);
-    Timeframe timeframe = new Timeframe(date, start, end);
-
-    // act
-    Exam exam = new Exam(ExamId.createDummy(), "Test Exam", false, 30, timeframe);
-
-    // assert
-    assertThat(exam.getTimeframe().start()).isEqualTo(start.minusMinutes(30));
-    assertThat(exam.getTimeframe().end()).isEqualTo(end.plusMinutes(30));
+    assertThat(result).isEqualTo("09:30 - 13:30");
   }
 
   @Test
