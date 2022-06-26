@@ -17,7 +17,6 @@ public class StudentDto {
   private Long id;
   private String githubName;
   private String githubId;
-  private Long leftoverVacationTime;
   @ElementCollection(fetch = FetchType.LAZY)
   private Set<VacationDto> vacations;
   @ElementCollection(fetch = FetchType.LAZY)
@@ -50,13 +49,6 @@ public class StudentDto {
     this.githubId = githubId;
   }
 
-  public Long getLeftoverVacationTime() {
-    return leftoverVacationTime;
-  }
-
-  public void setLeftoverVacationTime(Long leftoverVacationTime) {
-    this.leftoverVacationTime = leftoverVacationTime;
-  }
 
   public Set<VacationDto> getVacations() {
     return vacations;

@@ -18,38 +18,35 @@ public class StudentUnitTests {
   @Test
   @DisplayName("no vacation taken")
   void calcLeftoverVacationTimeTest1() {
-    // arrange
-    Long leftoverVacationTime = 120L;
-
-    // act
-    Student student = new Student(-1L, "janlingen", "123456",
-        leftoverVacationTime, Collections.emptySet(), Collections.emptySet());
+    // arrange & act
+    Student student = new Student(-1L, "janlingen", "123456", Collections.emptySet(),
+        Collections.emptySet());
 
     // assert
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(leftoverVacationTime);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
   }
 
   @Test
-  @DisplayName("240 minutes vacation is taken and leftoverVacationTime is correct")
+  @DisplayName("240 minutes vacation is taken and aggregatedVacationTime is correct")
   void calcLeftoverVacationTimeTest2() {
     // arrange
     Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
 
     // act
     Student student = new Student(-1L, "janlingen", "123456",
-        240L, Set.of(vacation), Collections.emptySet());
+        Set.of(vacation), Collections.emptySet());
 
     // assert
-    assertThat(student.getLeftoverVacationTime()).isZero();
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(240);
   }
 
   @Test
-  @DisplayName("vacation is successfully added and leftoverVacationTime is reduced correctly")
+  @DisplayName("vacation is successfully added and aggregatedVacationTime is increased correctly")
   void addVacationTest1() {
     // arrange
     Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
-    Student student = new Student(-1L, "janlingen", "123456",
-        240L, Collections.emptySet(), Collections.emptySet());
+    Student student = new Student(-1L, "janlingen", "123456", Collections.emptySet(),
+        Collections.emptySet());
 
     // act
     student.addVacation(vacation);
@@ -57,61 +54,61 @@ public class StudentUnitTests {
     // assert
     assertThat(student.getVacations().size()).isEqualTo(1);
     assertThat(student.getVacations().get(0)).isEqualTo(vacation);
-    assertThat(student.getLeftoverVacationTime()).isZero();
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(240);
   }
 
   @Test
-  @DisplayName("vacations are successfully added and leftoverVacationTime is reduced correctly")
+  @DisplayName("vacations are successfully added and aggregatedVacationTime is increased correctly")
   void addVacationsTest1() {
     // arrange
     Vacation vacation1 = new Vacation(Timeframe.createDummy(),
         "test 1"); // takes 240 minutes vaction;
     Vacation vacation2 = new Vacation(Timeframe.createDummy(),
         "test 2"); // takes 240 minutes vaction;
-    Student student = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+    Student student = new Student(-1L, "janlingen", "123456", Collections.emptySet(),
+        Collections.emptySet());
 
     // act
     student.addVacations(List.of(vacation1, vacation2));
 
     // assert
     assertThat(student.getVacations().size()).isEqualTo(2);
-    assertThat(student.getLeftoverVacationTime()).isZero();
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(480);
   }
 
   @Test
-  @DisplayName("vacation is successfully removed and leftoverVacationTime is increased correctly")
+  @DisplayName("vacation is successfully removed and aggregatedVacationTime is decreased correctly")
   void removeVacationTest1() {
     // arrange
     Vacation vacation = Vacation.createDummy(); // takes 240 minutes vaction;
-    Student student = new Student(-1L, "janlingen", "123456",
-        240L, Set.of(vacation), Collections.emptySet());
+    Student student = new Student(-1L, "janlingen", "123456"
+        , Set.of(vacation), Collections.emptySet());
 
     // act
     student.removeVacation(vacation);
 
     // assert
     assertThat(student.getVacations().size()).isZero();
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
   }
 
   @Test
-  @DisplayName("vacations are successfully removed and leftoverVacationTime is increased correctly")
+  @DisplayName("vacations are successfully removed and aggregatedVacationTime is decreased correctly")
   void removeVacationsTest1() {
     // arrange
     Vacation vacation1 = new Vacation(Timeframe.createDummy(),
         "test 1"); // takes 240 minutes vaction;
     Vacation vacation2 = new Vacation(Timeframe.createDummy(),
         "test 2"); // takes 240 minutes vaction;
-    Student student = new Student(-1L, "janlingen", "123456",
-        480L, Set.of(vacation1, vacation2), Collections.emptySet());
+    Student student = new Student(-1L, "janlingen", "123456"
+        , Set.of(vacation1, vacation2), Collections.emptySet());
 
     // act
     student.removeVacations(Set.of(vacation1, vacation2));
 
     // assert
     assertThat(student.getVacations().size()).isZero();
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(480L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
   }
 
   @Test
@@ -133,8 +130,8 @@ public class StudentUnitTests {
   void removeExamIdTest1() {
     // arrange
     ExamId examId = ExamId.createDummy();
-    Student student = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptySet(), Set.of(examId));
+    Student student = new Student(-1L, "janlingen", "123456", Collections.emptySet(),
+        Set.of(examId));
 
     // act
     student.removeExamId(examId);
@@ -166,7 +163,7 @@ public class StudentUnitTests {
 
     // act
     Student student = new Student(-1L, "janlingen", "123456",
-        480L, Set.of(vacation1, vacation2, vacation3, vacation4), Collections.emptySet());
+        Set.of(vacation1, vacation2, vacation3, vacation4), Collections.emptySet());
 
     // assert
     assertThat(student.getVacations().get(1)).isEqualTo(vacation2);
@@ -185,7 +182,7 @@ public class StudentUnitTests {
     assertThat(student.getId()).isEqualTo(-1L);
     assertThat(student.getGithubName()).isEqualTo("githubName-dummy");
     assertThat(student.getGithubId()).isEqualTo("githubId-dummy");
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(300);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getVacations().size()).isZero();
     assertThat(student.getExamIds().size()).isZero();
   }
@@ -195,9 +192,9 @@ public class StudentUnitTests {
   void equalsTest1() {
     // arrange
     Student student1 = new Student(-1L, "lukeskywalker", "654321",
-        240L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student1.equals(student2);
@@ -212,9 +209,9 @@ public class StudentUnitTests {
     // arrange
     // arrange
     Student student1 = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student1.equals(student2);
@@ -228,7 +225,7 @@ public class StudentUnitTests {
   void equalsTest3() {
     // arrange
     Student student = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
     // act
     Boolean equal = student.equals(null);
 
@@ -241,7 +238,7 @@ public class StudentUnitTests {
   void equalsTest4() {
     // arrange
     Student student = new Student(-2L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
 
     // act
     Boolean equal = student.equals(student);
@@ -256,9 +253,9 @@ public class StudentUnitTests {
   void hashCodeTest1() {
     // arrange
     Student student1 = new Student(-1L, "lukeskywalker", "654321",
-        240L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
     Student student2 = new Student(-1L, "janlingen", "123456",
-        480L, Collections.emptySet(), Collections.emptySet());
+        Collections.emptySet(), Collections.emptySet());
 
     // act
     Integer hashCode1 = student1.hashCode();

@@ -97,7 +97,7 @@ public class StudentService {
 
   private Student createStudent(String githubName, String githubId) {
     return studentRepository.save(
-        new Student(null, githubName, githubId, timeService.getVacationTime(),
+        new Student(null, githubName, githubId,
             Collections.emptySet(), Collections.emptySet()));
   }
 
@@ -107,18 +107,19 @@ public class StudentService {
     Set<Vacation> old = new HashSet<>();
     Set<Vacation> sameDayNoOverlap = new HashSet<>();
     Long deletedTime = 0L;
-    Boolean vacationAtDay = checkSameDayForExam(vacation.timeframe(), examTimeframes);
+    Boolean exanAtSameDay = checkSameDayForExam(vacation.timeframe(), examTimeframes);
     for (Vacation v : student.getVacations()) {
       // other vacation on same day
       if (v.timeframe().isSameDay(newVacation.timeframe())) {
         if (!(newVacation.timeframe().end().isBefore(v.timeframe().start())
             || newVacation.timeframe().start().isAfter(v.timeframe().end()))) {
-          deletedTime += v.timeframe().duration();
+          deletedTime -= v.timeframe().duration();
           old.add(v);
           newVacation = newVacation.merge(v);
         } else {
-          if (!vacationAtDay) {
+          if (!exanAtSameDay) {
             sameDayNoOverlap.add(v);
+
           }
         }
       }
@@ -128,7 +129,7 @@ public class StudentService {
         return VacationValidator.NOT_ENOUGH_SPACE_BETWEEN;
       }
     }
-    if (vacationAtDay) {
+    if (exanAtSameDay) {
       Set<Vacation> splitables = new HashSet<>();
       splitables.add(newVacation);
       for (Timeframe t : examTimeframes) {
@@ -140,7 +141,8 @@ public class StudentService {
       for (Vacation v : splitables) {
         duration += v.timeframe().duration();
       }
-      if (student.getLeftoverVacationTime() + deletedTime < duration) {
+      if ((timeService.getVacationTime() - (student.getAggregatedVacationTime() + deletedTime))
+          < duration) {
         return VacationValidator.NOT_ENOUGH_TIME_LEFT;
       }
       student.removeVacations(old);
@@ -148,7 +150,8 @@ public class StudentService {
       return VacationValidator.SUCCESS;
     }
 
-    if (student.getLeftoverVacationTime() + deletedTime < newVacation.timeframe().duration()) {
+    if ((timeService.getVacationTime() - (student.getAggregatedVacationTime() + deletedTime))
+        < newVacation.timeframe().duration()) {
       return VacationValidator.NOT_ENOUGH_TIME_LEFT;
     }
     if ((newVacation.timeframe().duration() > timeService.getMaximumVacationLenght()

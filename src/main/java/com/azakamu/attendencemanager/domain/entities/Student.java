@@ -25,19 +25,18 @@ public class Student {
   private final String githubId;
   private final Set<Vacation> vacations;
   private final Set<ExamId> examIds;
-  private Long leftoverVacationTime;
+  private Long aggregatedVacationTime;
 
   /**
    * Required arguments constructor, that initializes every class attribute.
    *
-   * @param id                   the id of the student
-   * @param githubName           the Github name of the student
-   * @param githubId             the unique Github ID of the student
-   * @param leftoverVacationTime the minutes of vacation a student can take
-   * @param vacations            the vacations of the student
-   * @param examIds              the references of the student to his exams
+   * @param id         the id of the student
+   * @param githubName the Github name of the student
+   * @param githubId   the unique Github ID of the student
+   * @param vacations  the vacations of the student
+   * @param examIds    the references of the student to his exams
    */
-  public Student(Long id, String githubName, String githubId, Long leftoverVacationTime,
+  public Student(Long id, String githubName, String githubId,
       Set<Vacation> vacations,
       Set<ExamId> examIds) {
     this.id = id;
@@ -45,8 +44,8 @@ public class Student {
     this.githubId = githubId;
     this.vacations = new HashSet<>(vacations);
     this.examIds = new HashSet<>(examIds);
-    this.leftoverVacationTime = leftoverVacationTime;
-    calcLeftoverVacationTime();
+    this.aggregatedVacationTime = 0L;
+    calcAggregatedVacationTime();
   }
 
   /**
@@ -55,16 +54,17 @@ public class Student {
    * @return an instance of {@link Student} with id -1.
    */
   public static Student createDummy() {
-    return new Student(-1L, "githubName-dummy", "githubId-dummy", 300L,
+    return new Student(-1L, "githubName-dummy", "githubId-dummy",
         Collections.emptySet(), Collections.emptySet());
   }
 
   /**
-   * Calculates the leftover vacation time of the student based on his list of vacations.
+   * Calculates the aggregated vacation time of the student based on his list of vacations.
    */
-  private void calcLeftoverVacationTime() {
+  private void calcAggregatedVacationTime() {
+    this.aggregatedVacationTime = 0L;
     for (Vacation v : this.vacations) {
-      this.leftoverVacationTime -= v.timeframe().duration();
+      this.aggregatedVacationTime += v.timeframe().duration();
     }
   }
 
@@ -75,7 +75,7 @@ public class Student {
    */
   public void addVacation(Vacation vacation) {
     this.vacations.add(vacation);
-    this.leftoverVacationTime -= vacation.timeframe().duration();
+    this.aggregatedVacationTime += vacation.timeframe().duration();
   }
 
   /**
@@ -96,7 +96,7 @@ public class Student {
    */
   public void removeVacation(Vacation vacation) {
     this.vacations.remove(vacation);
-    this.leftoverVacationTime += vacation.timeframe().duration();
+    this.aggregatedVacationTime -= vacation.timeframe().duration();
   }
 
   /**
@@ -162,8 +162,8 @@ public class Student {
     return githubId;
   }
 
-  public Long getLeftoverVacationTime() {
-    return leftoverVacationTime;
+  public Long getAggregatedVacationTime() {
+    return aggregatedVacationTime;
   }
 
   public List<Vacation> getVacations() {

@@ -25,7 +25,6 @@ public class StudentMapperUnitTests {
     assertThat(studentDto.getId()).isEqualTo(student.getId());
     assertThat(studentDto.getGithubName()).isEqualTo(student.getGithubName());
     assertThat(studentDto.getGithubId()).isEqualTo(student.getGithubId());
-    assertThat(studentDto.getLeftoverVacationTime()).isEqualTo(student.getLeftoverVacationTime());
     assertThat(vacationMapper.toDomainSet(studentDto.getVacations())).containsAll(
         student.getVacations());
     assertThat(examIdMapper.toDomainSet(studentDto.getExamIds())).containsAll(

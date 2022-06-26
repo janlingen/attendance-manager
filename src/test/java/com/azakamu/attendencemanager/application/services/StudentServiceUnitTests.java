@@ -48,7 +48,7 @@ public class StudentServiceUnitTests {
   @DisplayName("gets a student that exists")
   void getStudentTest1() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     when(studentRepo.findByGithubId(student.getGithubId())).thenReturn(student);
 
@@ -77,7 +77,7 @@ public class StudentServiceUnitTests {
   @DisplayName("take a vacation, that takes up all of a student vacation time (240min)")
   void enrollVacationTest1() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     LocalDate date = LocalDate.of(2022, 7, 13);
     LocalTime start = LocalTime.of(9, 30);
@@ -91,7 +91,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.SUCCESS);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(0);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(240);
     assertThat(student.getVacations().get(0).timeframe().date()).isEqualTo(date);
     assertThat(student.getVacations().get(0).timeframe().start()).isEqualTo(start);
     assertThat(student.getVacations().get(0).timeframe().end()).isEqualTo(end);
@@ -101,7 +101,7 @@ public class StudentServiceUnitTests {
   @DisplayName("take a vacation, that takes up more than all of a student vacation time (240min)")
   void enrollVacationTest2() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     LocalDate date = LocalDate.of(2022, 7, 13);
     LocalTime start = LocalTime.of(9, 30);
@@ -115,7 +115,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.NOT_ENOUGH_TIME_LEFT);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getVacations().size()).isZero();
   }
 
@@ -123,7 +123,7 @@ public class StudentServiceUnitTests {
   @DisplayName("take a vacation, that is not in timespan")
   void enrollVacationTest3() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     LocalDate date = LocalDate.of(2022, 5, 13);
     LocalTime start = LocalTime.of(9, 30);
@@ -137,7 +137,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.NOT_IN_TIMESPAN);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getVacations().size()).isZero();
   }
 
@@ -149,7 +149,7 @@ public class StudentServiceUnitTests {
         LocalTime.of(10, 0));
     Timeframe timeframeExam2 = new Timeframe(LocalDate.of(2022, 7, 22), LocalTime.of(11, 30),
         LocalTime.of(13, 30));
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     student.addExamId(new ExamId(1L));
     student.addExamId(new ExamId(2L));
@@ -168,7 +168,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.SUCCESS);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(150);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(90);
     assertThat(student.getExamIds().size()).isEqualTo(2);
     assertThat(student.getVacations().size()).isEqualTo(1);
     assertThat(student.getVacations().get(0).timeframe().start()).isEqualTo(LocalTime.of(10, 0));
@@ -181,7 +181,7 @@ public class StudentServiceUnitTests {
   @DisplayName("vacation is in conflict with an existing vacation, they can be merged")
   void enrollVacationTest5() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation = new Vacation(
         new Timeframe(LocalDate.of(2022, 7, 22), LocalTime.of(9, 30), LocalTime.of(10, 0)),
@@ -201,7 +201,7 @@ public class StudentServiceUnitTests {
     assertThat(result).isEqualTo(VacationValidator.SUCCESS);
     assertThat(student.getVacations()).doesNotContain(vacation);
     assertThat(student.getVacations().size()).isEqualTo(1);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(180L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(60);
     assertThat(student.getVacations().get(0).timeframe().start()).isEqualTo(
         vacation.timeframe().start());
     assertThat(student.getVacations().get(0).timeframe().end()).isEqualTo(end);
@@ -215,7 +215,7 @@ public class StudentServiceUnitTests {
       "vacation is in conflict with an existing vacation, they can't be merged, merged vacation would be to long")
   void enrollVacationTest6() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation = new Vacation(
         new Timeframe(LocalDate.of(2022, 7, 22), LocalTime.of(9, 0), LocalTime.of(10, 0)),
@@ -236,7 +236,7 @@ public class StudentServiceUnitTests {
     assertThat(result).isEqualTo(VacationValidator.TOO_LONG);
     assertThat(student.getVacations()).contains(vacation);
     assertThat(student.getVacations().size()).isEqualTo(1);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(180L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(60);
   }
 
   @Test
@@ -245,7 +245,7 @@ public class StudentServiceUnitTests {
           + "merged vacation is to close to another vacation")
   void enrollVacationTest7() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation1 =
         new Vacation(
@@ -273,7 +273,7 @@ public class StudentServiceUnitTests {
     assertThat(student.getVacations()).contains(vacation1);
     assertThat(student.getVacations()).contains(vacation2);
     assertThat(student.getVacations().size()).isEqualTo(2);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(90L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(150);
   }
 
   @Test
@@ -282,7 +282,7 @@ public class StudentServiceUnitTests {
           + "merged vacation is far enough from other vacations")
   void enrollVacationTest8() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation1 =
         new Vacation(
@@ -310,7 +310,7 @@ public class StudentServiceUnitTests {
     assertThat(student.getVacations()).contains(vacation1);
     ;
     assertThat(student.getVacations().size()).isEqualTo(2);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(165L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(75);
   }
 
   @Test
@@ -322,7 +322,7 @@ public class StudentServiceUnitTests {
     Timeframe exam =
         new Timeframe(LocalDate.of(2022, 7, 22),
             LocalTime.of(12, 0), LocalTime.of(12, 45));
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation =
         new Vacation(
@@ -344,7 +344,7 @@ public class StudentServiceUnitTests {
     assertThat(result).isEqualTo(VacationValidator.SUCCESS);
     assertThat(student.getVacations()).doesNotContain(vacation);
     assertThat(student.getVacations().size()).isEqualTo(2);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(45L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(195);
   }
 
   @Test
@@ -356,7 +356,7 @@ public class StudentServiceUnitTests {
     Timeframe exam =
         new Timeframe(LocalDate.of(2022, 7, 22),
             LocalTime.of(9, 30), LocalTime.of(10, 30));
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation =
         new Vacation(
@@ -380,14 +380,14 @@ public class StudentServiceUnitTests {
     assertThat(result).isEqualTo(VacationValidator.SUCCESS);
     assertThat(student.getVacations()).doesNotContain(vacation);
     assertThat(student.getVacations().size()).isEqualTo(1);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(60L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(180L);
   }
 
   @Test
   @DisplayName("try to enroll for a vacation on a weekend")
   void enrollVacationTest11() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     LocalDate date = LocalDate.of(2022, 7, 23);
     LocalTime start = LocalTime.of(9, 30);
@@ -411,7 +411,7 @@ public class StudentServiceUnitTests {
     Timeframe exam =
         new Timeframe(LocalDate.of(2022, 7, 21),
             LocalTime.of(9, 30), LocalTime.of(13, 30));
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     student.addExamId(new ExamId(1L));
 
@@ -438,7 +438,7 @@ public class StudentServiceUnitTests {
           + "and not enought leftover vacation time")
   void enrollVacationTest13() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation =
         new Vacation(
@@ -473,7 +473,7 @@ public class StudentServiceUnitTests {
   @DisplayName("try to enroll vacation that can not be divided by given intervall")
   void enrollVacationTest14() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
 
     LocalDate date = LocalDate.of(2022, 7, 22);
@@ -495,7 +495,7 @@ public class StudentServiceUnitTests {
   @DisplayName("try to enroll vacation with start after end")
   void enrollVacationTest15() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
 
     LocalDate date = LocalDate.of(2022, 7, 22);
@@ -510,6 +510,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.START_AFTER_END);
+    assertThat(result.getMsg()).isEqualTo("ERROR: Vacation start is after vacation end!");
     assertThat(student.getVacations().size()).isEqualTo(0);
   }
 
@@ -517,7 +518,7 @@ public class StudentServiceUnitTests {
   @DisplayName("try to enroll vacation that is too long")
   void enrollVacationTest16() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     LocalDate date = LocalDate.of(2022, 7, 12);
     LocalTime start = LocalTime.of(9, 30);
@@ -531,7 +532,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(result).isEqualTo(VacationValidator.TOO_LONG);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getVacations().size()).isEqualTo(0);
   }
 
@@ -544,9 +545,9 @@ public class StudentServiceUnitTests {
             LocalTime.of(9, 30), LocalTime.of(13, 30));
     ExamId examId = new ExamId(1L);
 
-    Student student1 = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student1 = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
-    Student student2 = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student2 = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     student2.addExamId(examId);
 
@@ -559,7 +560,7 @@ public class StudentServiceUnitTests {
 
     // assert
     verify(studentRepo, times(1)).save(student2);
-    assertThat(student1.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student1.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student1.getExamIds()).contains(examId);
     assertThat(student1.getExamIds().size()).isEqualTo(1);
   }
@@ -573,7 +574,7 @@ public class StudentServiceUnitTests {
             LocalTime.of(9, 30), LocalTime.of(13, 30));
     ExamId examId = new ExamId(1L);
 
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     student.addExamId(examId);
 
@@ -584,7 +585,7 @@ public class StudentServiceUnitTests {
     service.enrollExam("skywalker", "12345678", 1L);
 
     // assert
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getExamIds().size()).isEqualTo(1);
   }
 
@@ -601,7 +602,7 @@ public class StudentServiceUnitTests {
     ExamId examId1 = new ExamId(1L);
     ExamId examId2 = new ExamId(2L);
 
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
 
     when(studentRepo.findByGithubId("12345678")).thenReturn(student);
@@ -613,7 +614,7 @@ public class StudentServiceUnitTests {
     service.enrollExam("skywalker", "12345678", 2L);
 
     // assert
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getExamIds().size()).isEqualTo(2);
   }
 
@@ -622,7 +623,7 @@ public class StudentServiceUnitTests {
       "enroll exam, existing vacation gets split correctly")
   void enrollExamTest4() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     Vacation vacation =
         new Vacation(
@@ -643,7 +644,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(student.getExamIds()).contains(examId);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(90);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(150);
     assertThat(student.getVacations()).doesNotContain(vacation);
     assertThat(student.getVacations().size()).isEqualTo(2);
   }
@@ -653,7 +654,7 @@ public class StudentServiceUnitTests {
       "enroll exam that takes up the whole day, existing vacation gets removed")
   void enrollExamTest5() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     Vacation vacation =
         new Vacation(
@@ -674,7 +675,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(student.getExamIds()).contains(examId);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
     assertThat(student.getVacations()).doesNotContain(vacation);
     assertThat(student.getVacations().size()).isZero();
   }
@@ -685,7 +686,7 @@ public class StudentServiceUnitTests {
       "enroll exam , existing vacation is not getting touched")
   void enrollExamTest6() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         Collections.emptySet(), Collections.emptySet());
     Vacation vacation =
         new Vacation(
@@ -706,14 +707,14 @@ public class StudentServiceUnitTests {
     // assert
     assertThat(student.getExamIds()).contains(examId);
     assertThat(student.getVacations().size()).isEqualTo(1);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(180L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(60);
   }
 
   @Test
   @DisplayName("cancel one exam when enrolled for two exams")
   void cancelExamTest1() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     ExamId examId1 = new ExamId(1L);
     ExamId examId2 = new ExamId(2L);
@@ -737,7 +738,7 @@ public class StudentServiceUnitTests {
   @DisplayName("try to cancel exam which is already passed")
   void cancelExamTest2() {
     // arrange
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     ExamId examId1 = new ExamId(1L);
     ExamId examId2 = new ExamId(2L);
@@ -765,7 +766,7 @@ public class StudentServiceUnitTests {
     LocalTime start = LocalTime.of(9, 30);
     LocalTime end = LocalTime.of(10, 0);
 
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     Vacation vacation = new Vacation(new Timeframe(date, start, end), "light-saber training");
     student.addVacation(vacation);
@@ -777,7 +778,7 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(student.getVacations().size()).isEqualTo(0);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
   }
 
   @Test
@@ -788,7 +789,7 @@ public class StudentServiceUnitTests {
     LocalTime start = LocalTime.of(9, 30);
     LocalTime end = LocalTime.of(10, 0);
 
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
     Vacation vacation = new Vacation(new Timeframe(date, start, end), "light-saber training");
     student.addVacation(vacation);
@@ -810,7 +811,7 @@ public class StudentServiceUnitTests {
     LocalTime start = LocalTime.of(9, 30);
     LocalTime end = LocalTime.of(10, 0);
 
-    Student student = new Student(1L, "skywalker", "12345678", timeService.getVacationTime(),
+    Student student = new Student(1L, "skywalker", "12345678",
         new HashSet<>(), new HashSet<>());
 
     when(studentRepo.findByGithubId("12345678")).thenReturn(student);
@@ -820,6 +821,6 @@ public class StudentServiceUnitTests {
 
     // assert
     assertThat(student.getVacations().size()).isEqualTo(0);
-    assertThat(student.getLeftoverVacationTime()).isEqualTo(240L);
+    assertThat(student.getAggregatedVacationTime()).isEqualTo(0);
   }
 }

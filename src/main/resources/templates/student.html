@@ -83,7 +83,7 @@
         <td></td>
         <td></td>
         <td><strong><span
-            th:text="${maxVacTime - student.getLeftoverVacationTime()}">75</span></strong></td>
+            th:text="${student.getAggregatedVacationTime()}">75</span></strong></td>
         <td></td>
       </tr>
       <tr>
@@ -91,7 +91,8 @@
         <td></td>
         <td></td>
         <td><strong><span class="leftoverVacationTime"
-                          th:text="${student.getLeftoverVacationTime()}">165</span></strong></td>
+                          th:text="${maxVacTime - student.getAggregatedVacationTime()}">165</span></strong>
+        </td>
         <td></td>
       </tr>
       </tfoot>
