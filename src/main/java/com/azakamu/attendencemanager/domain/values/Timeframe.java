@@ -3,6 +3,7 @@ package com.azakamu.attendencemanager.domain.values;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -13,6 +14,17 @@ import java.time.LocalTime;
  * @param end   the end to represent, from 00:00 to 23:5
  */
 public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
+
+  /**
+   * Creates a dummy instance of Timeframe.
+   *
+   * @return an instance of {@link Timeframe} build with {@link LocalDate} and {@link LocalTime}
+   */
+  public static Timeframe createDummy() {
+    return new Timeframe(LocalDate.of(2021, 12, 24),
+        LocalTime.of(9, 30),
+        LocalTime.of(13, 30));
+  }
 
   /**
    * Uses the Attributes {@link #start()} and {@link #end()} of a given instance to calculate the
@@ -68,13 +80,13 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   }
 
   /**
-   * Checks if {@link #date()} is at least one day before the date of another {@link Timeframe}
+   * Checks if {@link #date()} is at least one day before the date of a given {@link LocalDate}
    *
-   * @param timeframe the time frame to be compared
-   * @return true if {@link #date()} is before the given {@link Timeframe}'s date, else false
+   * @param time the time to be compared with
+   * @return true if {@link #date()} is before the given {@link LocalDate}'s date, else false
    */
-  public Boolean isDayBefore(Timeframe timeframe) {
-    return date().isBefore(timeframe.date());
+  public Boolean isDayBefore(LocalDateTime time) {
+    return this.date().isBefore(time.toLocalDate());
   }
 
   /**
@@ -105,17 +117,6 @@ public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
   @Override
   public String toString() {
     return date() + " from " + start() + " to " + end();
-  }
-
-  /**
-   * Creates a dummy instance of Timeframe.
-   *
-   * @return an instance of {@link Timeframe} build with {@link LocalDate} and {@link LocalTime}
-   */
-  public static Timeframe createDummy() {
-    return new Timeframe(LocalDate.of(2021, 12, 24),
-        LocalTime.of(9, 30),
-        LocalTime.of(13, 30));
   }
 
 }

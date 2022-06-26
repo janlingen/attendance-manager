@@ -3,6 +3,7 @@ package com.azakamu.attendencemanager.domain.values;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -168,10 +169,9 @@ public class TimeframeUnitTests {
     LocalTime start = LocalTime.of(9, 32);
     LocalTime end = LocalTime.of(13, 32);
     Timeframe timeframe1 = new Timeframe(date1, start, end);
-    Timeframe timeframe2 = new Timeframe(date2, start, end);
 
     // act
-    Boolean sameDay = timeframe1.isDayBefore(timeframe2);
+    Boolean sameDay = timeframe1.isDayBefore(LocalDateTime.of(date2, start));
 
     // assert
     assertThat(sameDay).isTrue();
@@ -186,10 +186,9 @@ public class TimeframeUnitTests {
     LocalTime start = LocalTime.of(9, 32);
     LocalTime end = LocalTime.of(13, 32);
     Timeframe timeframe1 = new Timeframe(date1, start, end);
-    Timeframe timeframe2 = new Timeframe(date2, start, end);
 
     // act
-    Boolean sameDay = timeframe1.isDayBefore(timeframe2);
+    Boolean sameDay = timeframe1.isDayBefore(LocalDateTime.of(date2, start));
 
     // assert
     assertThat(sameDay).isFalse();
