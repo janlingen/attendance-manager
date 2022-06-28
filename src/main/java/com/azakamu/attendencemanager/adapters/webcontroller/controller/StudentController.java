@@ -74,6 +74,32 @@ public class StudentController {
     return "student";
   }
 
+  @GetMapping("/vacationenrollment")
+  public String vacationEnrollment(Model model) {
+    model.addAttribute("times", vacationTimes);
+    VacationValidator result = (VacationValidator) model.getAttribute("result");
+    if (result != null) {
+      model.addAttribute("errorMsg", result.getMsg());
+    }
+    return "vacationenrollment";
+  }
+
+  @GetMapping("/examenrollment")
+  public String examEnrollment(Model model) {
+    model.addAttribute("exams", examService.getUpcommingExams());
+    return "examenrollment";
+  }
+
+  @GetMapping("/examcreation")
+  public String examCreation(Model model) {
+    model.addAttribute("times", examTimes);
+    ExamValidator result = (ExamValidator) model.getAttribute("result");
+    if (result != null) {
+      model.addAttribute("errorMsg", result.getMsg());
+    }
+    return "examcreation";
+  }
+
   @PostMapping("/cancelVacation")
   public String cancelVacation(VacationForm form,
       @ModelAttribute("githubName") String githubName,
@@ -89,16 +115,6 @@ public class StudentController {
       @ModelAttribute("githubId") String githubId) {
     studentService.cancelExam(githubName, githubId, exam);
     return "redirect:/";
-  }
-
-  @GetMapping("/vacationenrollment")
-  public String vacationEnrollment(Model model) {
-    model.addAttribute("times", vacationTimes);
-    VacationValidator result = (VacationValidator) model.getAttribute("result");
-    if (result != null) {
-      model.addAttribute("errorMsg", result.getMsg());
-    }
-    return "vacationenrollment";
   }
 
   @PostMapping("/enrollVacation")
@@ -118,27 +134,11 @@ public class StudentController {
     }
   }
 
-  @GetMapping("/examenrollment")
-  public String examEnrollment(Model model) {
-    model.addAttribute("exams", examService.getUpcommingExams());
-    return "examenrollment";
-  }
-
   @PostMapping("/enrollExam")
   public String enrollExam(Long examid, @ModelAttribute("githubName") String githubName,
       @ModelAttribute("githubId") String githubId) {
     studentService.enrollExam(githubName, githubId, examid);
     return "redirect:/";
-  }
-
-  @GetMapping("/examcreation")
-  public String examCreation(Model model) {
-    model.addAttribute("times", examTimes);
-    ExamValidator result = (ExamValidator) model.getAttribute("result");
-    if (result != null) {
-      model.addAttribute("errorMsg", result.getMsg());
-    }
-    return "examcreation";
   }
 
   @PostMapping("/createExam")
