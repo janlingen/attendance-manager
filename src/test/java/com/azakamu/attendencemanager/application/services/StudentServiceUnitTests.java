@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
+import com.azakamu.attendencemanager.application.services.helper.AdminService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
 import com.azakamu.attendencemanager.domain.entities.Student;
@@ -29,11 +30,12 @@ public class StudentServiceUnitTests {
   private final StudentRepository studentRepo = mock(StudentRepository.class);
   private final ExamService examService = mock(ExamService.class);
   private final TimeService timeService = mock(TimeService.class);
+  private final AdminService adminService = mock(AdminService.class);
   private StudentService service;
 
   @BeforeEach
   void setup() {
-    service = new StudentService(studentRepo, examService, timeService);
+    service = new StudentService(studentRepo, examService, timeService, adminService);
     when(timeService.getTimespanStart()).thenReturn(LocalDate.of(2022, 6, 25));
     when(timeService.getTimespanEnd()).thenReturn(LocalDate.of(2300, 6, 25));
     when(timeService.getExemptionOffsetOffline()).thenReturn(120);

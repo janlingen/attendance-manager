@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.azakamu.attendencemanager.application.services.ExamService;
 import com.azakamu.attendencemanager.application.services.StudentService;
+import com.azakamu.attendencemanager.application.services.helper.AdminService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.ExamValidator;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
@@ -36,6 +37,8 @@ public class StudentControllerIntegrationTests {
   TimeService timeService;
   @MockBean
   ExamService examService;
+  @MockBean
+  AdminService adminService;
   @MockBean
   StudentService studentService;
 

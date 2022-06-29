@@ -1,2 +1,39 @@
-package com.azakamu.attendencemanager.application.services.helper;public class AdminService {
+package com.azakamu.attendencemanager.application.services.helper;
+
+import com.azakamu.attendencemanager.application.repositories.AdminRepository;
+import com.azakamu.attendencemanager.domain.entities.LogMessage;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdminService {
+
+  private final AdminRepository adminRepository;
+
+
+  public AdminService(AdminRepository adminRepository) {
+    this.adminRepository = adminRepository;
+  }
+
+  public List<LogMessage> getSortedLogs() {
+    List<LogMessage> toSort = adminRepository.findAll();
+    sortLogMessages(toSort);
+    return toSort;
+  }
+
+  public void save(LogMessage logMessage) {
+    adminRepository.save(logMessage);
+  }
+
+
+  private void sortLogMessages(List<LogMessage> logs) {
+    logs.sort((log1, log2) -> {
+      if (log1.getCreatedAt().isBefore(log2.getCreatedAt())) {
+        return -1;
+      } else if (log1.getCreatedAt().isAfter(log2.getCreatedAt())) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 }

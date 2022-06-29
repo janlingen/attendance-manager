@@ -1,8 +1,10 @@
 package com.azakamu.attendencemanager.application.services;
 
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
+import com.azakamu.attendencemanager.application.services.helper.AdminService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
+import com.azakamu.attendencemanager.domain.entities.LogMessage;
 import com.azakamu.attendencemanager.domain.entities.Student;
 import com.azakamu.attendencemanager.domain.values.ExamId;
 import com.azakamu.attendencemanager.domain.values.Timeframe;
@@ -21,18 +23,25 @@ public class StudentService {
   private final StudentRepository studentRepository;
   private final ExamService examService;
   private final TimeService timeService;
+  private final AdminService adminService;
 
   public StudentService(StudentRepository studentRepository, ExamService examService,
-      TimeService timeService) {
+      TimeService timeService, AdminService adminService) {
     this.studentRepository = studentRepository;
     this.examService = examService;
     this.timeService = timeService;
+    this.adminService = adminService;
   }
 
   public Student getStudent(String githubName, String githubId) {
     Student query = studentRepository.findByGithubId(githubId);
     if (!query.getGithubId().equals(githubId)) {
       query = createStudent(githubName, githubId);
+      adminService.save(
+          new LogMessage(githubId,
+              "Student with githubId: " + githubId + " and githubName: " + githubName
+                  + " was created.", null,
+              null));
     }
     return query;
   }
@@ -58,6 +67,8 @@ public class StudentService {
     VacationValidator result =
         bookVacation(query, examService.getTimeframesByIds(query.getExamIds()), vacation);
     studentRepository.save(query);
+    adminService.save(new LogMessage(githubId,
+        "Student with githubId: " + githubId + " updated his vacations.", null, null));
     return result;
   }
 
@@ -70,6 +81,9 @@ public class StudentService {
       if (date.isAfter(timeService.getTimespanStart())) {
         query.removeVacation(vacation);
         studentRepository.save(query);
+        adminService.save(new LogMessage(githubId,
+            "Student with githubId: " + githubId + " removed a vacation on date: " + date + " .",
+            null, null));
       }
     }
   }
@@ -82,6 +96,9 @@ public class StudentService {
           new ExamId(examId),
           examService.getTimeframeById(new ExamId(examId)));
       studentRepository.save(query);
+      adminService.save(new LogMessage(githubId,
+          "Student with githubId: " + githubId + " enrolled for exam with id: " + examId + " .",
+          null, null));
     }
   }
 
@@ -92,6 +109,11 @@ public class StudentService {
       Student query = getStudent(githubName, githubId);
       query.removeExamId(new ExamId(examId));
       studentRepository.save(query);
+      adminService.save(
+          new LogMessage(githubId,
+              "Student with githubId: " + githubId + " removed exam with id: " + examId + " .",
+              null,
+              null));
     }
   }
 
