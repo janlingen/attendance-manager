@@ -7,9 +7,19 @@ import java.time.LocalTime;
  * Vacation is an immutable object that stores a time frame and a reason to provide context.
  *
  * @param timeframe the time frame in which the vacation takes place
- * @param reason    the reason for taking a vacation
+ * @param reason    the reason for taking a vacation, to be displayed to tutors/admins
  */
 public record Vacation(Timeframe timeframe, String reason) {
+
+  /**
+   * Creates a dummy instance of Vacation.
+   *
+   * @return an instance of {@link Vacation} build with {@link Timeframe#createDummy()} and
+   * {@link String} "test"
+   */
+  public static Vacation createDummy() {
+    return new Vacation(Timeframe.createDummy(), "test");
+  }
 
   /**
    * Checks if {@link Vacation#timeframe()} is in the given attendance timeframe, otherwise it makes
@@ -58,15 +68,5 @@ public record Vacation(Timeframe timeframe, String reason) {
     }
     return new Vacation(new Timeframe(timeframe().date(), start, end),
         vacation.reason() + "; " + reason());
-  }
-
-  /**
-   * Creates a dummy instance of Vacation.
-   *
-   * @return an instance of {@link Vacation} build with {@link Timeframe#createDummy()} and
-   * {@link String} "test"
-   */
-  public static Vacation createDummy() {
-    return new Vacation(Timeframe.createDummy(), "test");
   }
 }
