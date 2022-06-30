@@ -7,6 +7,6 @@ public interface AdminRepository {
 
   List<LogMessage> findAll();
 
-  void save(LogMessage message);
+  LogMessage save(LogMessage message);
 
 }

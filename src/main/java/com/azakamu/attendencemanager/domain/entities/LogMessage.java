@@ -17,6 +17,11 @@ public class LogMessage {
     this.createdAt = createdAt;
   }
 
+  public static LogMessage createDummy() {
+    return new LogMessage("12345678", "light-saber training", -1L,
+        LocalDateTime.of(2022, 12, 24, 10, 10));
+  }
+
   public String getGithubId() {
     return githubId;
   }

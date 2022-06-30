@@ -26,8 +26,8 @@ public class AdminRepoImpl implements AdminRepository {
   }
 
   @Override
-  public void save(LogMessage message) {
-    logMessageDao.save(logMessageMapper.toDto(message));
+  public LogMessage save(LogMessage message) {
+    return logMessageMapper.toDomain(logMessageDao.save(logMessageMapper.toDto(message)));
   }
 
 

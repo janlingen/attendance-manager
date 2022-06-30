@@ -10,7 +10,6 @@ public class AdminService {
 
   private final AdminRepository adminRepository;
 
-
   public AdminService(AdminRepository adminRepository) {
     this.adminRepository = adminRepository;
   }
@@ -21,8 +20,8 @@ public class AdminService {
     return toSort;
   }
 
-  public void save(LogMessage logMessage) {
-    adminRepository.save(logMessage);
+  public LogMessage save(LogMessage logMessage) {
+    return adminRepository.save(logMessage);
   }
 
 
