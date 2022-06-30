@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azakamu.attendencemanager.application.repositories.StudentRepository;
-import com.azakamu.attendencemanager.application.services.helper.AdminService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
 import com.azakamu.attendencemanager.domain.entities.Student;

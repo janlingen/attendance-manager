@@ -39,7 +39,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     HttpSecurity security =
         http.authorizeRequests(
             a ->
-                a.antMatchers("/css/*", "/js/*", "/error", "/stats")
+                a.antMatchers("/css/*", "/js/*", "/error", "/stats", "/static/*", "/favicon.ico")
                     .permitAll()
                     .anyRequest()
                     .authenticated());
@@ -54,7 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .userInfoEndpoint()
         .userService(createUserService());
   }
-  
+
   private OAuth2UserService<OAuth2UserRequest, OAuth2User> createUserService() {
     return new OAuth2UserService<>() {
 

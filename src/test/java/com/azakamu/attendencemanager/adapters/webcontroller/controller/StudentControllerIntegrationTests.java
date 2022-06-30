@@ -9,9 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.azakamu.attendencemanager.application.services.AdminService;
 import com.azakamu.attendencemanager.application.services.ExamService;
 import com.azakamu.attendencemanager.application.services.StudentService;
-import com.azakamu.attendencemanager.application.services.helper.AdminService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.ExamValidator;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
