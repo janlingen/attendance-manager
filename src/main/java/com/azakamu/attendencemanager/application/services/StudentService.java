@@ -9,6 +9,7 @@ import com.azakamu.attendencemanager.domain.values.ExamId;
 import com.azakamu.attendencemanager.domain.values.Timeframe;
 import com.azakamu.attendencemanager.domain.values.Vacation;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -52,7 +53,8 @@ public class StudentService {
       return VacationValidator.NOT_X_MIN_INTERVAL;
     }
     if (!timeframe.isInTimespan(
-        timeService.getTimespanStart(), timeService.getTimespanEnd())) {
+        timeService.getTimespanStart(), timeService.getTimespanEnd())
+        || LocalDateTime.of(timeframe.date(), timeframe.start()).isBefore(LocalDateTime.now())) {
       return VacationValidator.NOT_IN_TIMESPAN;
     }
     if (timeframe.isWeekend()) {
