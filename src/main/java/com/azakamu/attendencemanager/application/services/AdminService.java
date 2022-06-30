@@ -1,4 +1,4 @@
-package com.azakamu.attendencemanager.application.services.helper;
+package com.azakamu.attendencemanager.application.services;
 
 import com.azakamu.attendencemanager.application.repositories.AdminRepository;
 import com.azakamu.attendencemanager.domain.entities.LogMessage;
