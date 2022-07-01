@@ -26,7 +26,8 @@
 </div>
 <div class="container">
   <h1 class="text-center"
-      th:text="'Exemptions from: ' + ${student.getGithubName()}">Exemptions from: skywalker</h1>
+      th:text="'Tutor Insights for: ' + ${student.getGithubName()}">Tutor Insights for:
+    skywalker</h1>
   <h2 id="vacations">Vacations</h2>
   <p class="alert alert-dark" id="alert1" th:if="${student.getVacations().size() == 0}">Student is
     not enrolled for any

@@ -36,7 +36,7 @@
     <br><br>
     <form method="post" th:action="@{/enrollExam}">
       <div class="form-group">
-        <label for="examid">Choose one of the upcoming exam:
+        <label for="examid">Choose one of the upcoming exams:
           <select class="form-control" id="examid" name="examid" required>
             <option disabled hidden selected value="">--choose exam--</option>
             <option th:each="exam : ${exams}"
