@@ -14,6 +14,4 @@ public interface LogMessageMapper {
 
   List<LogMessage> toDomainList(List<LogMessageDto> logMessageDtos);
 
-  List<LogMessageDto> toDtoSet(List<LogMessage> logMessages);
-
 }
