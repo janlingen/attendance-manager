@@ -26,7 +26,7 @@ A spring boot application with a web user interface (thymeleaf) to manage projec
 6. Export the needed enviroment variables:
     - `export CLIENT_ID=YOUR_ClIENT_ID`
     - `export CLIENT_SECRET=YOUR_CLIENT_SECRET`
-7. Start the application with `gradle bootRun` or `./gradlew bootRun` depending on your operations
+7. Start the application with `./gradlew bootRun` or `gradle bootRun` depending on your operations
    system.
 
 ## Different stakeholder views
