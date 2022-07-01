@@ -9,6 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 /**
+ * !!! Overdeveloped, but useful for educational purposes, but normally the first thing you should
+ * do is rely on a class generating library like mapstruct being adequately tested, on the other
+ * hand, this ensures that each of the currently existing fields is properly mapped. !!!
+ * <p>
+ * I recommend writing these types of tests at the end of the project if you have excess time.
+ *
  * @author janlingen
  */
 public class LogMessageMapperUnitTests {

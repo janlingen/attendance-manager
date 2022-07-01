@@ -22,6 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
+ * !!! Debatable if these tests are real integration tests, for this project everything which needs
+ * spring to boot up parts of the application is counted as integration test. !!!
+ *
  * @author janlingen
  */
 @WebMvcTest(controllers = TutorController.class)
