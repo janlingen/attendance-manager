@@ -54,8 +54,9 @@
         <label for="start">Choose start time:
           <select class="form-control form-control-lg" id="start" name="start" required>
             <option disabled hidden selected value="">--choose time--</option>
-            <option>09:30</option>
-            <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
+            <option th:each="time : ${times.subList(0,times.size()-1)}" th:text="${time}"
+                    th:value="${time}"
+                    value="09:45">
               09:45
             </option>
           </select></label>
@@ -64,8 +65,8 @@
         <label for="end">Choose end time:
           <select class="form-control form-control-lg" id="end" name="end" required>
             <option disabled hidden selected value="">--choose time--</option>
-            <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
-              13:15
+            <option th:each="time : ${times.subList(1, times.size())}" th:text="${time}"
+                    th:value="${time}" value="09:45">
             </option>
             <option>13:30</option>
           </select></label>

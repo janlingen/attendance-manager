@@ -37,7 +37,6 @@
         <label for="start">Choose start time:
           <select class="form-control form-control-lg" id="start" name="start" required>
             <option disabled hidden selected value="">--choose time--</option>
-            <option>09:30</option>
             <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
               09:45
             </option>
@@ -50,7 +49,6 @@
             <option th:each="time : ${times}" th:text="${time}" th:value="${time}" value="09:45">
               13:15
             </option>
-            <option>13:30</option>
           </select></label>
       </div>
       <div class="form-group">

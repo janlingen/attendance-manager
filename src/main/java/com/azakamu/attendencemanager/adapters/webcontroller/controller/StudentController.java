@@ -29,17 +29,6 @@ public class StudentController {
   private final StudentService studentService;
   private final ExamService examService;
   private final TimeService timeService;
-  // FIXME: no long term solution
-  private final List<String> vacationTimes =
-      List.of(
-          "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00",
-          "12:15", "12:30", "12:45", "13:00", "13:15");
-  // FIXME: no long term solution
-  private final List<String> examTimes =
-      List.of(
-          "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
-          "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30",
-          "19:00");
 
   public StudentController(StudentService studentService, ExamService examService,
       TimeService timeService) {
@@ -76,7 +65,7 @@ public class StudentController {
 
   @GetMapping("/vacationenrollment")
   public String vacationEnrollment(Model model) {
-    model.addAttribute("times", vacationTimes);
+    model.addAttribute("times", timeService.getTimefractions());
     VacationValidator result = (VacationValidator) model.getAttribute("result");
     if (result != null) {
       model.addAttribute("errorMsg", result.getMsg());
@@ -92,7 +81,7 @@ public class StudentController {
 
   @GetMapping("/examcreation")
   public String examCreation(Model model) {
-    model.addAttribute("times", examTimes);
+    model.addAttribute("times", timeService.getTimefractions());
     ExamValidator result = (ExamValidator) model.getAttribute("result");
     if (result != null) {
       model.addAttribute("errorMsg", result.getMsg());
