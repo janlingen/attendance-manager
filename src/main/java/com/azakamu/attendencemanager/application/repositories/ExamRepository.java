@@ -4,6 +4,9 @@ import com.azakamu.attendencemanager.domain.entities.Exam;
 import com.azakamu.attendencemanager.domain.values.ExamId;
 import java.util.List;
 
+/**
+ * @author janlingen
+ */
 public interface ExamRepository {
 
   Exam save(Exam exam);

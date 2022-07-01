@@ -2,6 +2,9 @@ package com.azakamu.attendencemanager.adapters.database.datatransfer.values;
 
 import javax.persistence.Embeddable;
 
+/**
+ * @author janlingen
+ */
 @Embeddable
 public class ExamIdDto {
 

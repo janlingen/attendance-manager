@@ -8,6 +8,7 @@ import java.time.LocalTime;
  *
  * @param timeframe the time frame in which the vacation takes place
  * @param reason    the reason for taking a vacation, to be displayed to tutors/admins
+ * @author janlingen
  */
 public record Vacation(Timeframe timeframe, String reason) {
 

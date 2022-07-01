@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author janlingen
+ */
 public class TutorServiceUnitTests {
 
   private final TutorRepository tutorRepo = mock(TutorRepository.class);

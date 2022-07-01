@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 
+/**
+ * @author janlingen
+ */
 @Entity
 public class LogMessageDto {
 
@@ -17,11 +20,6 @@ public class LogMessageDto {
   private LocalDateTime createdAt;
   private String githubId;
   private String action;
-
-  public LogMessageDto(String githubId, String action) {
-    this.githubId = githubId;
-    this.action = action;
-  }
 
   public LogMessageDto() {
   }

@@ -5,6 +5,9 @@ import com.azakamu.attendencemanager.domain.entities.LogMessage;
 import java.util.List;
 import org.mapstruct.Mapper;
 
+/**
+ * @author janlingen
+ */
 @Mapper
 public interface LogMessageMapper {
 

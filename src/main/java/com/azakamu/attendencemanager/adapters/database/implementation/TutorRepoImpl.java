@@ -8,6 +8,9 @@ import java.util.List;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author janlingen
+ */
 @Component
 public class TutorRepoImpl implements TutorRepository {
 

@@ -4,6 +4,9 @@ import com.azakamu.attendencemanager.adapters.database.datatransfer.values.Timef
 import com.azakamu.attendencemanager.domain.values.Timeframe;
 import org.mapstruct.Mapper;
 
+/**
+ * @author janlingen
+ */
 @Mapper
 public interface TimeframeMapper {
 

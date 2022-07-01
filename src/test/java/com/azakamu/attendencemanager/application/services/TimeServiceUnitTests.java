@@ -8,6 +8,9 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author janlingen
+ */
 public class TimeServiceUnitTests {
 
   private TimeService service;

@@ -8,6 +8,9 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author janlingen
+ */
 public class VacationMapperUnitTests {
 
   VacationMapper mapper = Mappers.getMapper(VacationMapper.class);

@@ -7,6 +7,9 @@ import com.azakamu.attendencemanager.domain.entities.Student;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author janlingen
+ */
 public class StudentMapperUnitTests {
 
   StudentMapper mapper = Mappers.getMapper(StudentMapper.class);

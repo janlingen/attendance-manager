@@ -5,6 +5,9 @@ import com.azakamu.attendencemanager.domain.entities.LogMessage;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author janlingen
+ */
 @Service
 public class AdminService {
 

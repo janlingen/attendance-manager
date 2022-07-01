@@ -6,6 +6,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+/**
+ * @author janlingen
+ */
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     uses = {

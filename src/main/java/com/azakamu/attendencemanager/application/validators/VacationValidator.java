@@ -1,5 +1,8 @@
 package com.azakamu.attendencemanager.application.validators;
 
+/**
+ * @author janlingen
+ */
 public enum VacationValidator {
   ON_WEEKEND("ERROR: Vacation is on a weekend!"),
   NOT_IN_TIMESPAN("ERROR: Vacation is not in the project time span!"),

@@ -8,6 +8,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author janlingen
+ */
 public class LogMessageMapperUnitTests {
 
   LogMessageMapper mapper = Mappers.getMapper(LogMessageMapper.class);

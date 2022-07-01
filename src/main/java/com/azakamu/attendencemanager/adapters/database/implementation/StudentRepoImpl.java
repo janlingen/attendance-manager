@@ -7,6 +7,9 @@ import com.azakamu.attendencemanager.domain.entities.Student;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author janlingen
+ */
 @Component
 public class StudentRepoImpl implements StudentRepository {
 

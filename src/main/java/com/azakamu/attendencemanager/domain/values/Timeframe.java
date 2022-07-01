@@ -12,6 +12,7 @@ import java.time.LocalTime;
  * @param date  the date to represent, from MIN_DATE to MAX_DATE
  * @param start the start to represent, from 00:00 to 23:59
  * @param end   the end to represent, from 00:00 to 23:5
+ * @author janlingen
  */
 public record Timeframe(LocalDate date, LocalTime start, LocalTime end) {
 

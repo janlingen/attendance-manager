@@ -1,5 +1,8 @@
 package com.azakamu.attendencemanager.application.validators;
 
+/**
+ * @author janlingen
+ */
 public enum ExamValidator {
   NOT_IN_TIMESPAN("ERROR: Exam start is after exam end!"),
   START_AFTER_END("ERROR: Exam is not in the project time span!"),

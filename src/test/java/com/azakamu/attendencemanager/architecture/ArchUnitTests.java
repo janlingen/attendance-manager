@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author janlingen
+ */
 @AnalyzeClasses(
     packagesOf = AttendenceManagerApplication.class,
     importOptions = ImportOption.DoNotIncludeTests.class)

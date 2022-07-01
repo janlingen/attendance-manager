@@ -17,6 +17,8 @@ import java.util.Set;
  * (since this program will be used for software engineering projects at the university, we will use
  * Github as authenticator), a number of minutes they can use to take vacations, and two lists, one
  * for their {@link Vacation}'s and one for their {@link Exam}'s.
+ *
+ * @author janlingen
  */
 public class Student {
 

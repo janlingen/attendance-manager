@@ -4,6 +4,7 @@ package com.azakamu.attendencemanager.domain.values;
  * ExamId instances are immutable and used to build a reference between a student and an Exam.
  *
  * @param id the unique ID hold by an instance
+ * @author janlingen
  */
 public record ExamId(Long id) {
 

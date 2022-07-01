@@ -7,6 +7,9 @@ import com.azakamu.attendencemanager.domain.values.Timeframe;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author janlingen
+ */
 public class TimeframeMapperUnitTests {
 
   TimeframeMapper mapper = Mappers.getMapper(TimeframeMapper.class);

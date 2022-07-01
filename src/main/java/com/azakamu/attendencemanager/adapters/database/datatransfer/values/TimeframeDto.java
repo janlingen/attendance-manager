@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.persistence.Embeddable;
 
+/**
+ * @author janlingen
+ */
 @Embeddable
 public class TimeframeDto {
 

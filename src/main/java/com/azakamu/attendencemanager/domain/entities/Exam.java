@@ -16,6 +16,8 @@ import java.util.Objects;
  * <br>
  * E.g. an exam in starts at 11:00 and the exam takes place offline, {@link Timeframe#start()} could
  * be at 10:00 so that the student has 1h for arrival.
+ *
+ * @author janlingen
  */
 public class Exam {
 
