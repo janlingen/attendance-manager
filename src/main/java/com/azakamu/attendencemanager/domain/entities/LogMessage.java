@@ -1,6 +1,7 @@
 package com.azakamu.attendencemanager.domain.entities;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class LogMessage {
 
@@ -36,5 +37,22 @@ public class LogMessage {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    LogMessage that = (LogMessage) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }

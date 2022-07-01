@@ -9,10 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.azakamu.attendencemanager.application.services.AdminService;
 import com.azakamu.attendencemanager.application.services.ExamService;
 import com.azakamu.attendencemanager.application.services.StudentService;
-import com.azakamu.attendencemanager.application.services.TutorService;
 import com.azakamu.attendencemanager.application.services.helper.TimeService;
 import com.azakamu.attendencemanager.application.validators.ExamValidator;
 import com.azakamu.attendencemanager.application.validators.VacationValidator;
@@ -20,6 +18,7 @@ import com.azakamu.attendencemanager.domain.entities.Student;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest
+@WebMvcTest(controllers = StudentController.class)
 @AutoConfigureMockMvc(addFilters = false) // to disable Authentication
 public class StudentControllerIntegrationTests {
 
@@ -38,10 +37,6 @@ public class StudentControllerIntegrationTests {
   TimeService timeService;
   @MockBean
   ExamService examService;
-  @MockBean
-  TutorService tutorService;
-  @MockBean
-  AdminService adminService;
   @MockBean
   StudentService studentService;
 
@@ -109,7 +104,9 @@ public class StudentControllerIntegrationTests {
 
   @Test
   @DisplayName("GET request on /examcreation, check if view is correct when form not correct")
-  void examCreationTest2() throws Exception {
+  void examCreationTest1() throws Exception {
+    when(timeService.getTimefractions()).thenReturn(List.of("08:30", "08:45", "09:00"));
+
     mockMvc
         .perform(
             get("/examcreation")
@@ -120,7 +117,9 @@ public class StudentControllerIntegrationTests {
 
   @Test
   @DisplayName("GET request on /examcreation, check if view is correct")
-  void examCreationTest1() throws Exception {
+  void examCreationTest2() throws Exception {
+    when(timeService.getTimefractions()).thenReturn(List.of("08:30", "08:45", "09:00"));
+
     mockMvc
         .perform(
             get("/examcreation"))

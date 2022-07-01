@@ -1,2 +1,48 @@
-package com.azakamu.attendencemanager.adapters.webcontroller.controller;public class AdminControllerIntegrationTests {
+package com.azakamu.attendencemanager.adapters.webcontroller.controller;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import com.azakamu.attendencemanager.application.services.AdminService;
+import com.azakamu.attendencemanager.domain.entities.LogMessage;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(controllers = AdminController.class)
+@AutoConfigureMockMvc(addFilters = false) // to disable Authentication
+public class AdminControllerIntegrationTests {
+
+  @Autowired
+  MockMvc mockMvc;
+
+  @MockBean
+  AdminService adminService;
+
+
+  @Test
+  @DisplayName("GET request on /admin, check view is correct")
+  void adminTest1() throws Exception {
+    when(adminService.getSortedLogs()).thenReturn(
+        List.of(new LogMessage("12345678", "light-saber training", -1L,
+            LocalDateTime.now())));
+
+    mockMvc
+        .perform(get("/admin"))
+        .andExpect(view().name("admin"))
+        .andExpect(status().isOk());
+
+    verify(adminService, times(1)).getSortedLogs();
+
+  }
 }
