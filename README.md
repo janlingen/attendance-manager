@@ -17,19 +17,19 @@ which may be filled with exams or other appointments away from home.
 
 ## Different stakeholder views
 
-### Student View
+### Student view
 
 ![Screenshot](misc/student_view/student1.png)
 ![Screenshot](misc/student_view/student2.png)
 ![Screenshot](misc/student_view/student3.png)
 ![Screenshot](misc/student_view/student4.png)
 
-### Tutor View
+### Tutor view
 
 ![Screenshot](misc/tutor_view/tutor1.png)
 ![Screenshot](misc/tutor_view/tutor2.png)
 
-### Admin View
+### Admin view
 
 ![Screenshot](misc/admin_view/admin1.png)
 
@@ -52,6 +52,6 @@ which may be filled with exams or other appointments away from home.
 - Admins get an overview of log messages which are generated when a student performs an action for
   himself in the system. They also have access to the functionalities of a tutor.
 
-## Vacation and Exam enrollment logic
+## Vacation and exam enrollment logic
 
-## Architectural Overview
+## Architectural overview
