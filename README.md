@@ -97,7 +97,7 @@ A spring boot application with a web user interface (thymeleaf) to manage projec
 ### Technical context
 
 - Spring Boot Framework: the framework of choice as it is perfect for monolith development
-- GitHub OAuth2: the provider of choice for authentication, since most computer science students
+- GitHub OAuth2: the provider for authentication, since most computer science students
   already use it
 - MariaDB: the database of choice, as it works smoothly between different processor architectures
 
