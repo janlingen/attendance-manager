@@ -1,4 +1,4 @@
-# Attendence-Manager
+# Attendance-Manager
 
 A spring boot application with a web user interface (thymeleaf) to manage project participant absences in a university environment where students need to build daily attendance into their flexible schedule, which may be filled with exams or other appointments away from home.
 
@@ -23,10 +23,10 @@ A spring boot application with a web user interface (thymeleaf) to manage projec
 5. Start the preconfigured Docker container for the database.
     - `docker-compose up` while being in the directory
     - or `docker-compose up -d` if you want to continue using the terminal
-6. Export the needed enviroment variables:
+6. Export the needed environment variables:
     - `export CLIENT_ID=YOUR_ClIENT_ID`
     - `export CLIENT_SECRET=YOUR_CLIENT_SECRET`
-7. Start the application with `./gradlew bootRun` or `gradle bootRun` depending on your operations
+7. Start the application with `./gradlew bootRun` or `gradle bootRun` depending on your operating
    system.
 
 ## Different stakeholder views
@@ -111,3 +111,20 @@ A spring boot application with a web user interface (thymeleaf) to manage projec
 | Analyzability / Maintainability | All layers have defined tasks. It is ensured by different types of tests of the test pyramid that each component performs its task and in case of a change in the program which is accompanied by e.g. a logic change, the respective tests will fail and the error can be made out quickly. |
 
 ## Vacation and Exam enrollment logic
+### Vacation Logic
+
+- it is only possible to register for vacations that take place after the current day and time and do not fall on a weekend
+- the start and the end must be divisible by the configured interval
+- the start time must be before the end time and the day of the exam must be within the project period
+- a vacation can only be registered if there is sufficient remaining vacation time, and if there is no exam on the same day, the vacation must comply with the maximum permissible duration
+- if a new vacation conflicts with an already registered vacation, it is checked whether it is possible to merge the two vacations and whether they would then meet the already mentioned requirements
+
+### Exam Logic
+
+- it is only possible to register for exams that take place after the current day
+- it is possible for a student to cancel the registration until 23:59 on the day before the exam
+- if you book an exam which falls on the period of an already booked vacation, the vacation will be divided according to its length or cancelled completely in case of a complete overlap
+- other basic rules for the creation of an exam are
+    - the start time must be before the end time
+    - the day of the exam must be within the project period
+    - no exam can be created twice
