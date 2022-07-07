@@ -1,7 +1,7 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.controller;
+package com.azakamu.attendancemanager.adapters.web.controller;
 
-import com.azakamu.attendancemanager.adapters.webcontroller.datainput.ExamForm;
-import com.azakamu.attendancemanager.adapters.webcontroller.datainput.VacationForm;
+import com.azakamu.attendancemanager.adapters.web.datainput.ExamForm;
+import com.azakamu.attendancemanager.adapters.web.datainput.VacationForm;
 import com.azakamu.attendancemanager.application.services.ExamService;
 import com.azakamu.attendancemanager.application.services.StudentService;
 import com.azakamu.attendancemanager.application.services.helper.TimeService;

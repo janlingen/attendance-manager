@@ -1,4 +1,4 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.controller;
+package com.azakamu.attendancemanager.adapters.web.controller;
 
 import com.azakamu.attendancemanager.application.services.AdminService;
 import com.azakamu.attendancemanager.domain.entities.LogMessage;

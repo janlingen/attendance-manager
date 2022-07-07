@@ -1,4 +1,4 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.controller;
+package com.azakamu.attendancemanager.adapters.web.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

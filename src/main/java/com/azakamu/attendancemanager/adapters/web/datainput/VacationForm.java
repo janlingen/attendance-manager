@@ -1,4 +1,4 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.datainput;
+package com.azakamu.attendancemanager.adapters.web.datainput;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,7 +1,8 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.datainput;
+package com.azakamu.attendancemanager.adapters.web.datainput;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**

@@ -1,4 +1,4 @@
-package com.azakamu.attendancemanager.adapters.webcontroller.controller;
+package com.azakamu.attendancemanager.adapters.web.controller;
 
 import com.azakamu.attendancemanager.application.services.ExamService;
 import com.azakamu.attendancemanager.application.services.TutorService;
