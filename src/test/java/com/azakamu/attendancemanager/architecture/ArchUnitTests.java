@@ -19,8 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 /**
- * Architecture tests to ensure that the previously defined models and rules are adhered to during the
- * development process.
+ * Architecture tests to ensure that the previously defined models and rules are adhered to during
+ * the development process.
  * <p>
  * I recommend writing such tests at the very beginning of a project.
  * <p>
@@ -58,7 +58,6 @@ public class ArchUnitTests {
   @ArchTest
   static final ArchRule noJodaTime = GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME;
 
-
   // Onion architecture preset
   // ----------------------------------------------------------------------------------------------
 
@@ -70,7 +69,6 @@ public class ArchUnitTests {
           .applicationServices("..application..")
           .adapter("web", "..adapters.web.controller..")
           .adapter("database", "..adapters.database..");
-
 
   // Custom rules
   // ----------------------------------------------------------------------------------------------
@@ -84,7 +82,8 @@ public class ArchUnitTests {
   // Classes annotated with @Entity or @Embeddable should reside in package datatransfer
   @ArchTest
   static final ArchRule dtosMustResideInDatatransferPackage =
-      classes().that().areAnnotatedWith(Entity.class).or().areAnnotatedWith(Embeddable.class).should()
+      classes().that().areAnnotatedWith(Entity.class).or().areAnnotatedWith(Embeddable.class)
+          .should()
           .resideInAPackage("..datatransfer..")
           .as("DataTransferObjects should reside in a package '..datatransfer..'");
 

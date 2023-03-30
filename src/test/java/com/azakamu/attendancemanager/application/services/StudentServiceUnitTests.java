@@ -39,7 +39,7 @@ public class StudentServiceUnitTests {
   @BeforeEach
   void setup() {
     service = new StudentService(studentRepo, examService, timeService, adminService);
-    when(timeService.getLocalDateTime()).thenReturn(LocalDateTime.of(2022, 6, 25,1,1));
+    when(timeService.getLocalDateTime()).thenReturn(LocalDateTime.of(2022, 6, 25, 1, 1));
     when(timeService.getTimespanStart()).thenReturn(LocalDate.of(2022, 6, 25));
     when(timeService.getTimespanEnd()).thenReturn(LocalDate.of(2300, 6, 25));
     when(timeService.getExemptionOffsetOffline()).thenReturn(120);

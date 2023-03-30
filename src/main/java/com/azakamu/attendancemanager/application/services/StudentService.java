@@ -57,7 +57,8 @@ public class StudentService {
     }
     if (!timeframe.isInTimespan(
         timeService.getTimespanStart(), timeService.getTimespanEnd())
-        || LocalDateTime.of(timeframe.date(), timeframe.start()).isBefore(timeService.getLocalDateTime())) {
+        || LocalDateTime.of(timeframe.date(), timeframe.start())
+        .isBefore(timeService.getLocalDateTime())) {
       return VacationValidator.NOT_IN_TIMESPAN;
     }
     if (timeframe.isWeekend()) {
